@@ -1,3 +1,5 @@
+import { Avatar } from "../Avatar";
+import { Comment } from "../Comment";
 import styles from "./Post.module.css";
 
 export function Post() {
@@ -5,10 +7,7 @@ export function Post() {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <img
-            className={styles.avatar}
-            src="https://avatars.githubusercontent.com/u/42918667?v=4"
-          />
+          <Avatar src="https://avatars.githubusercontent.com/u/42918667?v=4" />
 
           <div className={styles.authorInfo}>
             <strong>Emerson Melo</strong>
@@ -25,12 +24,14 @@ export function Post() {
         <p>Fala galeraa 👋</p>
 
         <p>
-          Acabei de subir mais um projeto no meu portifa. É um projeto que fiz
-          no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, aliquam
+          fugit consequuntur, eligendi hic enim, harum obcaecati omnis vitae
+          illum nihil officiis autem doloribus consectetur quos ex! Quisquam,
+          voluptates iusto!
         </p>
 
         <p>
-          👉 <a href="#">jane.design/doctorcare</a>
+          👉 <a href="#">https://google.com.br</a>
         </p>
 
         <p>
@@ -48,6 +49,12 @@ export function Post() {
           <button type="submit">Publicar</button>
         </footer>
       </form>
+
+      <div className={styles.commentList}>
+        <Comment />
+        <Comment />
+        <Comment />
+      </div>
     </article>
   );
 }
