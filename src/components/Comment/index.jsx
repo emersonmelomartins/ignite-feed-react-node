@@ -22,7 +22,7 @@ export function Comment() {
             </button>
           </header>
 
-          <p>Muito bom Devon, parabéns!!</p>
+          <p>Muito bom, parabéns!!</p>
         </div>
 
         <footer>

@@ -11,7 +11,7 @@
 
 @media (max-width: 768px) {
   html {
-    font-size: 87.5%; /* 14/100 * 16 = 87.5 */
+    font-size: 87.5%; /* 14/100 * 16 = 87.5 | 1rem => 14px */
   }
 
   .wrapper {
