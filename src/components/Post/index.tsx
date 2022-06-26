@@ -1,13 +1,30 @@
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
 
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 
 import styles from "./Post.module.css";
 
-export function Post({ author, content, publishedAt }) {
+interface PostProps {
+  author: Author;
+  content: Content[];
+  publishedAt: Date;
+}
+
+interface Content {
+  type: "paragraph" | "link";
+  value: string;
+}
+
+interface Author {
+  avatar_url: string;
+  name: string;
+  role: string;
+}
+
+export function Post({ author, content, publishedAt }: PostProps) {
   const [comments, setComments] = useState(["Post muito bacana, hein!?"]);
   const [commentText, setCommentText] = useState("");
 
@@ -24,26 +41,26 @@ export function Post({ author, content, publishedAt }) {
     addSuffix: true,
   });
 
-  function handleCreateNewComment(event) {
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault();
 
     setComments([...comments, commentText]);
     setCommentText("");
   }
 
-  function handleChangeNewComment(event) {
+  function handleChangeNewComment(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("");
     setCommentText(event.target.value);
   }
 
-  function deleteComment(currentComment) {
+  function deleteComment(currentComment: string) {
     const updatedComments = comments.filter(
       (comment) => comment !== currentComment
     );
     setComments(updatedComments);
   }
 
-  function handleNewCommentInvalid(event) {
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("Esse campo é obrigatório");
   }
 
