@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import "express-async-errors";
 import express from "express";
+import cors from 'cors';
 
 import { serve, setup } from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
@@ -17,6 +18,8 @@ AppDataSource.initialize();
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
 
 const options: swaggerJsdoc.Options = {
   definition: {
