@@ -12,6 +12,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { User } from "../../users/entities/User";
+import { Comment } from "./Comment";
 import { Content } from "./Content";
 
 @Entity("posts")
@@ -28,6 +29,9 @@ export class Post {
 
   @OneToMany(() => Content, (content) => content.post_id)
   content: Content[];
+
+  @OneToMany(() => Comment, (comment) => comment.post_id)
+  comments: Comment[];
 
   @CreateDateColumn()
   created_at: Date;

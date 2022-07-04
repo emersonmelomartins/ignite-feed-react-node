@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
-import { User } from "../../entities/User";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { CreateUserError } from "./CreateUserError";
 import { hash } from "bcryptjs";
 import { IUserResponseDTO } from "@modules/users/dtos/IUserResponseDTO";
+import { CreateUserSchema } from "./CreateUserSchema";
 
 @injectable()
 export class CreateUserUseCase {
@@ -14,6 +14,10 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(data: ICreateUserDTO): Promise<IUserResponseDTO> {
+    const schema = new CreateUserSchema();
+
+    await schema.validate(data);
+
     const userExists = await this.usersRepository.findByEmail(data.email);
 
     if (userExists) {

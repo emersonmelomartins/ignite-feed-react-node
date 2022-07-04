@@ -1,6 +1,6 @@
-import { AppDataSource } from "../../../../database";
-import { app } from "../../../../app";
 import request from "supertest";
+import { app } from "../../../../../app";
+import { AppDataSource } from "../../../../../database";
 
 describe("Create User Controller", () => {
   beforeAll(async () => {
@@ -17,7 +17,7 @@ describe("Create User Controller", () => {
     const response = await request(app).post("/users").send({
       name: "Emerson",
       email: "emerson@email.com",
-      password: "1234",
+      password: "123456",
       role: "Web Developer",
       avatar: "",
     });
@@ -25,4 +25,5 @@ describe("Create User Controller", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id");
   });
+  
 });

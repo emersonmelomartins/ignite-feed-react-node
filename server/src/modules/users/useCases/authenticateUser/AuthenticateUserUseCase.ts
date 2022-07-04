@@ -5,7 +5,6 @@ import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { AuthenticateUserError } from "./AuthenticateUserError";
 
 import authConfig from '../../../../config/auth';
-import { User } from '@modules/users/entities/User';
 
 interface IRequest {
   email: string;
@@ -32,6 +31,7 @@ export class AuthenticateUserUseCase {
   }
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
+
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
