@@ -24,4 +24,16 @@ export class CommentsRepository implements ICommentsRepository {
 
     return repositories;
   }
+
+  async findById(comment_id: string): Promise<Comment | null> {
+    const comment = await this.repository.findOne({
+      where: {
+        id: comment_id,
+      },
+    });
+
+    if (!comment) return null;
+
+    return comment;
+  }
 }

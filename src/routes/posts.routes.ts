@@ -2,6 +2,7 @@ import { ensureAuthenticated } from "@middlewares/ensureAuthenticated";
 import { CreateCommentController } from "@modules/posts/useCases/createComment/CreateCommentController";
 import { CreatePostController } from "@modules/posts/useCases/createPost/CreatePostController";
 import { GetPostController } from "@modules/posts/useCases/getPost/GetPostController";
+import { GiveCommentLikeController } from "@modules/posts/useCases/giveCommentLike/GiveCommentLikeController";
 import { Router } from "express";
 
 export const postsRoutes = Router();
@@ -9,6 +10,7 @@ export const postsRoutes = Router();
 const createPostController = new CreatePostController();
 const getPostController = new GetPostController();
 const createCommentController = new CreateCommentController();
+const giveCommentLikeController = new GiveCommentLikeController();
 
 /**
  * @openapi
@@ -65,4 +67,10 @@ postsRoutes.post(
   "/:post_id/comment",
   ensureAuthenticated,
   createCommentController.handle
+);
+
+postsRoutes.patch(
+  "/comment/:comment_id/like",
+  ensureAuthenticated,
+  giveCommentLikeController.handle
 );
