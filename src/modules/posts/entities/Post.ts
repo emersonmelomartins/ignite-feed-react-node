@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -27,10 +28,12 @@ export class Post {
   @Column()
   user_id: string;
 
-  @OneToMany(() => Content, (content) => content.post_id)
+  @OneToMany(() => Content, (content) => content.post)
+  @JoinTable()
   content: Content[];
 
-  @OneToMany(() => Comment, (comment) => comment.post_id)
+  @OneToMany(() => Comment, (comment) => comment.post)
+  @JoinTable()
   comments: Comment[];
 
   @CreateDateColumn()
