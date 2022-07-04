@@ -3,5 +3,6 @@ import { Post } from "../entities/Post";
 
 export interface IPostsRepository {
   create(data: ICreatePostDTO): Promise<ICreatePostDTO>;
-  findByUser(id: string): Promise<Post[]>;
+  findByUser(user_id: string): Promise<Post[]>;
+  findById(id: string): Promise<Post | null>;
 }

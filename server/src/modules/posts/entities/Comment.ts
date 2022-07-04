@@ -35,5 +35,6 @@ export class Comment {
     if (!this.id) {
       this.id = uuid();
     }
+    this.likes = 0;
   }
 }

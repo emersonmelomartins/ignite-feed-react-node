@@ -1,8 +1,13 @@
+import { container } from "tsyringe";
+
+import { ICommentsRepository } from "@modules/posts/repositories/ICommentsRepository";
+import { CommentsRepository } from "@modules/posts/repositories/implementations/CommentsRepository";
+
 import { PostsRepository } from "@modules/posts/repositories/implementations/PostsRepository";
 import { IPostsRepository } from "@modules/posts/repositories/IPostsRepository";
-import { container } from "tsyringe";
-import { UsersRepository } from "../../modules/users/repositories/implementations/UsersRepository";
-import { IUsersRepository } from "../../modules/users/repositories/IUsersRepository";
+
+import { UsersRepository } from "@modules/users/repositories/implementations/UsersRepository";
+import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
@@ -12,4 +17,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IPostsRepository>(
   "PostsRepository",
   PostsRepository
+);
+
+container.registerSingleton<ICommentsRepository>(
+  "CommentsRepository",
+  CommentsRepository
 );

@@ -56,14 +56,31 @@ export class PostsRepository implements IPostsRepository {
       };
 
       return postResponse;
-      
     } catch (err) {
       throw new AppError((err as Error).message);
     } finally {
       await queryRunner.release();
     }
   }
-  findByUser(id: string): Promise<Post[]> {
-    throw new Error("Method not implemented.");
+
+  async findByUser(user_id: string): Promise<Post[]> {
+    return await this.repository.find({
+      where: {
+        user_id,
+      },
+    });
+  }
+
+  async findById(id: string): Promise<Post | null> {
+    const post = await this.repository.findOne({
+      where: {
+        id,
+      },
+      relations: ["content", "comments"]
+    });
+
+    if (!post) return null;
+
+    return post;
   }
 }
