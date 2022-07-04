@@ -1,9 +1,9 @@
+import { Repository } from "typeorm";
 import { ICreatePostDTO } from "@modules/posts/dtos/ICreatePostDTO";
 import { Content, ContentTypeEnum } from "@modules/posts/entities/Content";
 import { Post } from "@modules/posts/entities/Post";
 import { AppError } from "@shared/errors/AppError";
-import { AppDataSource } from "database";
-import { Repository } from "typeorm";
+import { AppDataSource } from "../../../../database";
 import { IPostsRepository } from "../IPostsRepository";
 
 interface IResponse {
