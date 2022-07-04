@@ -76,7 +76,7 @@ export class PostsRepository implements IPostsRepository {
       where: {
         id,
       },
-      relations: ["content", "comments"]
+      relations: ["content", "comments", "user"]
     });
 
     if (!post) return null;
