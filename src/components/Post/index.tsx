@@ -1,6 +1,13 @@
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  InvalidEvent,
+  useEffect,
+  useState,
+} from "react";
+import { api } from "../../services/api";
 
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
@@ -8,9 +15,10 @@ import { Comment } from "../Comment";
 import styles from "./Post.module.css";
 
 interface PostProps {
+  id: string;
   author: Author;
   content: Content[];
-  publishedAt: Date;
+  publishedAt: string;
 }
 
 interface Content {
@@ -19,33 +27,50 @@ interface Content {
 }
 
 interface Author {
-  avatar_url: string;
+  avatar: string;
   name: string;
   role: string;
 }
 
-export function Post({ author, content, publishedAt }: PostProps) {
-  const [comments, setComments] = useState(["Post muito bacana, hein!?"]);
+interface Comment {
+  id: string;
+  likes: number;
+  commentary: string;
+}
+
+export function Post({ id, author, content, publishedAt }: PostProps) {
+  const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState("");
 
-  const publishedDateFormatted = format(
-    publishedAt,
-    "d 'de' LLLL 'às' HH:mm'h'",
-    {
-      locale: ptBR,
-    }
-  );
+  useEffect(() => {
+    api
+      .get("/posts/cbb39370-398c-4fdd-ae58-a356e005f7dd/comments")
+      .then((resp) => {
+        console.log(resp.data);
+        setComments(resp.data);
+      });
+  }, []);
 
-  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
-    locale: ptBR,
-    addSuffix: true,
-  });
+  // const publishedAtToDate = new Date(publishedAt)
+
+  // const publishedDateFormatted = format(
+  //   publishedAtToDate,
+  //   "d 'de' LLLL 'às' HH:mm'h'",
+  //   {
+  //     locale: ptBR,
+  //   }
+  // );
+
+  // const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
+  //   locale: ptBR,
+  //   addSuffix: true,
+  // });
 
   function handleCreateNewComment(event: FormEvent) {
-    event.preventDefault();
+    // event.preventDefault();
 
-    setComments([...comments, commentText]);
-    setCommentText("");
+    // setComments([...comments, commentText]);
+    // setCommentText("");
   }
 
   function handleChangeNewComment(event: ChangeEvent<HTMLTextAreaElement>) {
@@ -54,10 +79,10 @@ export function Post({ author, content, publishedAt }: PostProps) {
   }
 
   function deleteComment(currentComment: string) {
-    const updatedComments = comments.filter(
-      (comment) => comment !== currentComment
-    );
-    setComments(updatedComments);
+    // const updatedComments = comments.filter(
+    //   (comment) => comment !== currentComment
+    // );
+    // setComments(updatedComments);
   }
 
   function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
@@ -70,7 +95,7 @@ export function Post({ author, content, publishedAt }: PostProps) {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatar_url} />
+          <Avatar src={author.avatar} />
 
           <div className={styles.authorInfo}>
             <strong>{author.name}</strong>
@@ -79,10 +104,10 @@ export function Post({ author, content, publishedAt }: PostProps) {
         </div>
 
         <time
-          title={publishedDateFormatted}
-          dateTime={publishedAt.toISOString()}
+        // title={publishedDateFormatted}
+        // dateTime={publishedAtToDate.toISOString()}
         >
-          {publishedDateRelativeToNow}
+          {/* {publishedDateRelativeToNow} */}
         </time>
       </header>
 
@@ -121,8 +146,9 @@ export function Post({ author, content, publishedAt }: PostProps) {
       <div className={styles.commentList}>
         {comments.map((comment) => (
           <Comment
-            key={comment}
-            content={comment}
+            key={comment.id}
+            content={comment.commentary}
+            likes={comment.likes}
             onDeleteComment={deleteComment}
           />
         ))}
