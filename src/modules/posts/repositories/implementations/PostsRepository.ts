@@ -1,21 +1,10 @@
 import { Repository } from "typeorm";
 import { ICreatePostDTO } from "@modules/posts/dtos/ICreatePostDTO";
-import { Content, ContentTypeEnum } from "@modules/posts/entities/Content";
+import { Content } from "@modules/posts/entities/Content";
 import { Post } from "@modules/posts/entities/Post";
 import { AppError } from "@shared/errors/AppError";
 import { AppDataSource } from "../../../../database";
 import { IPostsRepository } from "../IPostsRepository";
-
-interface IResponse {
-  id: string;
-  user_id: string;
-  content: [
-    {
-      type: ContentTypeEnum;
-      value: string;
-    }
-  ];
-}
 
 export class PostsRepository implements IPostsRepository {
   repository: Repository<Post>;
@@ -76,11 +65,17 @@ export class PostsRepository implements IPostsRepository {
       where: {
         id,
       },
-      relations: ["content", "comments", "user"]
+      relations: ["content", "comments", "user"],
     });
 
     if (!post) return null;
 
     return post;
+  }
+
+  async list(): Promise<Post[]> {
+    return await this.repository.find({
+      relations: ["content", "comments", "user"],
+    });
   }
 }
