@@ -38,7 +38,7 @@ export class AuthenticateUserUseCase {
       throw new AuthenticateUserError.IncorrectUserOrPassword();
     }
 
-    const comparePassword = compare(password, user.password);
+    const comparePassword = await compare(password, user.password);
 
     if (!comparePassword) {
       throw new AuthenticateUserError.IncorrectUserOrPassword();
