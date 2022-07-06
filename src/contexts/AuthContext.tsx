@@ -11,7 +11,7 @@ interface AuthContextProps {
     password: string,
     role: string,
     avatar?: string
-  ) => void;
+  ) => Promise<boolean>;
   signed: boolean;
   user: User;
 }
@@ -58,13 +58,21 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     setSigned(false);
   }
 
-  function register(
+  async function register(
     name: string,
     email: string,
     password: string,
     role: string,
-    avatar?: string
-  ) {}
+  ) {
+    await api.post("/users", {
+      email,
+      password,
+      name,
+      role
+    });
+
+    return true;
+  }
 
   return (
     <AuthContext.Provider
