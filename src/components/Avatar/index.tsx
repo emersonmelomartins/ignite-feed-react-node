@@ -3,7 +3,6 @@ import styles from "./Avatar.module.css";
 
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   hasBorder?: boolean;
-  src?: string;
 }
 
 export function Avatar({ hasBorder = true, ...props }: AvatarProps) {
