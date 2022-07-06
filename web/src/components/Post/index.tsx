@@ -9,6 +9,8 @@ import {
 } from "react";
 import { api } from "../../services/api";
 
+import defaultAvatarPng from "../../assets/default-avatar.png";
+
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 
@@ -19,6 +21,7 @@ interface PostProps {
   author: Author;
   content: Content[];
   publishedAt: string;
+  comments: Comment[];
 }
 
 interface Content {
@@ -27,7 +30,7 @@ interface Content {
 }
 
 interface Author {
-  avatar: string;
+  avatar: string | null;
   name: string;
   role: string;
 }
@@ -38,18 +41,14 @@ interface Comment {
   commentary: string;
 }
 
-export function Post({ id, author, content, publishedAt }: PostProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
+export function Post({
+  id,
+  author,
+  content,
+  comments,
+  publishedAt,
+}: PostProps) {
   const [commentText, setCommentText] = useState("");
-
-  useEffect(() => {
-    api
-      .get("/posts/cbb39370-398c-4fdd-ae58-a356e005f7dd/comments")
-      .then((resp) => {
-        console.log(resp.data);
-        setComments(resp.data);
-      });
-  }, []);
 
   // const publishedAtToDate = new Date(publishedAt)
 
@@ -68,7 +67,6 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
 
   function handleCreateNewComment(event: FormEvent) {
     // event.preventDefault();
-
     // setComments([...comments, commentText]);
     // setCommentText("");
   }
@@ -95,7 +93,7 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatar} />
+          <Avatar src={author.avatar ?? defaultAvatarPng} />
 
           <div className={styles.authorInfo}>
             <strong>{author.name}</strong>
