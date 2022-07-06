@@ -37,3 +37,18 @@ body, input, textarea, button {
   font-weight: 400;
   font-size: 1rem;
 }
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  background: var(--gray-900);
+  border: 0;
+  padding: 1rem;
+  border-radius: 8px;
+  color: var(--gray-100);
+  line-height: 1.4;
+  margin-bottom: 0.875rem;
+}
