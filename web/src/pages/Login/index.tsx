@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
-import igniteLogo from "../assets/ignite-logo.svg";
+import igniteLogo from "../../assets/ignite-logo.svg";
 import styles from "./Login.module.css";
 
 export function Login() {
@@ -22,8 +22,6 @@ export function Login() {
   }
 
   const isSubmitDisabled = !email || !password;
-
-  console.log(isSubmitDisabled);
 
   return (
     <div className={styles.wrapper}>
@@ -54,8 +52,10 @@ export function Login() {
 
           <footer>
             <div className={styles.signup}>
-               <span>Novo por aqui? <a href="#">Registre-se</a></span>
-               
+              <span>
+                Novo por aqui? <Link to="/register">Registre-se</Link>
+              </span>
+
               <a href="">Esqueceu a senha?</a>
             </div>
             <button type="submit" disabled={isSubmitDisabled}>
