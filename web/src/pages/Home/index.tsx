@@ -1,3 +1,4 @@
+import { Plus } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { Post } from "../../components/Post";
@@ -50,6 +51,11 @@ export function Home() {
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
+          <form className={styles.newPost}>
+            <button>
+              <Plus />
+              Nova publicação</button>
+          </form>
           {posts.map((post) => (
             <Post
               key={post.id}

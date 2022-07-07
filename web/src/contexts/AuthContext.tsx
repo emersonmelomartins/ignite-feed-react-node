@@ -21,10 +21,10 @@ interface AuthContextProviderProps {
 }
 
 interface User {
-  user: {
-    name: string;
-    email: string;
-  };
+  name: string;
+  email: string;
+  role: string;
+  avatar: string | null;
   token: string;
 }
 
@@ -37,7 +37,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   useEffect(() => {
     if (user) {
-      if (user.hasOwnProperty("user") && user.hasOwnProperty("token")) {
+      if (user.hasOwnProperty("email") && user.hasOwnProperty("token")) {
         setSigned(true);
       }
     }
@@ -48,7 +48,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       email,
       password,
     });
-    
+
     setUser(data);
     setSigned(true);
   }
@@ -62,13 +62,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     name: string,
     email: string,
     password: string,
-    role: string,
+    role: string
   ) {
     await api.post("/users", {
       email,
       password,
       name,
-      role
+      role,
     });
 
     return true;
