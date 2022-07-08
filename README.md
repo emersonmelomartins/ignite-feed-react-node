@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./web/src/assets/logo.svg" />
+    <img src="./web/src/assets/ignite-logo.svg" />
 <h1 align="center">Ignite Feed</h1>
 </div>
 
