@@ -132,8 +132,8 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
               )}
             </ul>
           )}
-          json
-          <pre>{JSON.stringify(content, null, 2)}</pre>
+          {/* json
+          <pre>{JSON.stringify(content, null, 2)}</pre> */}
         </div>
       </Modal>
     </div>
