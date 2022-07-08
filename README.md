@@ -13,7 +13,7 @@ Uma aplicação simulando uma rede social de artigos, inicialmente foi um exerci
 
 <p align="left">
   <img src="./github__assets/preview-01.png" width=350 alt="Página de login" />
-  <img src="./github__assets/preview-02.png" width=375 alt="Página de cadastro" />
+  <img src="./github__assets/preview-02.png" width=373 alt="Página de cadastro" />
 </p>
 <p align="left">
   <img src="./github__assets/preview-03.png" width=350 alt="Página de postagens" />
