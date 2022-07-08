@@ -30,7 +30,7 @@
   gap: 0.5rem;
 }
 
-button:not(:disabled):hover {
+.newPost button:not(:disabled):hover {
   background: var(--green-300);
 }
 
