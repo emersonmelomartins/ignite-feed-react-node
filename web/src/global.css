@@ -52,3 +52,12 @@ input[type="tel"] {
   line-height: 1.4;
   margin-bottom: 0.875rem;
 }
+
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}

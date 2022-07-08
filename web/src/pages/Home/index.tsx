@@ -1,6 +1,7 @@
 import { Plus } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
+import { NewPostModal } from "../../components/NewPostModal";
 import { Post } from "../../components/Post";
 import { Sidebar } from "../../components/Sidebar";
 import { api } from "../../services/api";
@@ -18,7 +19,7 @@ interface Post {
       post_id: string;
       type: "paragraph" | "link";
       value: string;
-    },
+    }
   ];
   comments: [
     {
@@ -38,7 +39,16 @@ interface Post {
 }
 
 export function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
+
+  function handleOpenModal() {
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setIsModalOpen(false);
+  }
 
   useEffect(() => {
     api.get("/posts").then((resp) => {
@@ -47,14 +57,18 @@ export function Home() {
   }, []);
   return (
     <div>
-
       <div className={styles.wrapper}>
         <Sidebar />
         <main>
           <form className={styles.newPost}>
-            <button>
+            <button type="button" onClick={handleOpenModal}>
               <Plus />
-              Nova publicação</button>
+              Nova publicação
+            </button>
+            <NewPostModal
+              isOpen={isModalOpen}
+              onRequestClose={handleCloseModal}
+            />
           </form>
           {posts.map((post) => (
             <Post
