@@ -13,7 +13,7 @@ export class CreatePostUseCase {
   ) {}
   async execute({ content, user_id }: ICreatePostDTO) {
     
-    const post = this.postsRepository.create({
+    const post = await this.postsRepository.create({
       content,
       user_id,
     });
