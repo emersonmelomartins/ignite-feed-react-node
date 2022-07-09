@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { Link, PaperPlaneTilt, TextT, X } from "phosphor-react";
+import { Link, PaperPlaneTilt, TextT, Trash, X } from "phosphor-react";
 import { v4 as uuid } from "uuid";
 import styles from "./NewPostModal.module.css";
 import { api } from "../../services/api";
+import { toast } from "react-toastify";
 
 interface NewPostModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface Content {
   type: "paragraph" | "link";
   value: string;
   isEditing: boolean;
+  order: number;
 }
 
 export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
@@ -23,11 +25,46 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
   const isPublishButtonHaveContent = content.length === 0;
 
   function handleAddText() {
+    let order = 0;
+
+    if (content.length > 0) {
+      content.forEach((item) => {
+        if (item.order >= order) {
+          order = item.order + 1;
+        }
+      });
+    }
+
     const newContent: Content = {
       id: uuid(),
       type: "paragraph",
       value: "",
       isEditing: false,
+      order,
+    };
+
+    setContent((content) => {
+      return [...content, newContent];
+    });
+  }
+
+  function handleAddLink() {
+    let order = 0;
+
+    if (content.length > 0) {
+      content.forEach((item) => {
+        if (item.order >= order) {
+          order = item.order + 1;
+        }
+      });
+    }
+
+    const newContent: Content = {
+      id: uuid(),
+      type: "link",
+      value: "",
+      isEditing: false,
+      order,
     };
 
     setContent((content) => {
@@ -59,12 +96,38 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
     setContent(newContent);
   }
 
-  async function handleSubmit() {
-    const res = await api.post("/posts", {
-      content,
+  function handleDeleteContent(id: string) {
+    const newContent = content.filter((item) => item.id !== id);
+
+    setContent(newContent);
+  }
+
+  function isValidToSubmit(): boolean {
+    let isValid = true;
+
+    content.forEach((item) => {
+      if (!Boolean(item.value)) {
+        isValid = false;
+      }
     });
 
-    console.log(res.data);
+    if (!isValid) {
+      toast.error(
+        "Você possui item(ns) inválido(s), verifique antes de publicar."
+      );
+    }
+
+    return isValid;
+  }
+
+  async function handleSubmit() {
+    if (isValidToSubmit()) {
+      await api.post("/posts", {
+        content,
+      });
+
+      window.location.reload();
+    }
   }
 
   return (
@@ -72,7 +135,6 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
-        contentLabel="Example Modal"
         className={styles.modalContainer}
         overlayClassName={styles.modalOverlay}
       >
@@ -82,7 +144,6 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
             <X size={18} />
           </button>
         </header>
-
         <div className={styles.content}>
           <div className={styles.contentButtons}>
             <div className={styles.contentType}>
@@ -90,13 +151,16 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
                 <TextT />
                 Texto
               </button>
-              <button type="button">
+              <button type="button" onClick={handleAddLink}>
                 <Link />
                 Link
               </button>
             </div>
 
-            <button onClick={handleSubmit} disabled={isPublishButtonHaveContent}>
+            <button
+              onClick={handleSubmit}
+              disabled={isPublishButtonHaveContent}
+            >
               <PaperPlaneTilt />
               Publicar
             </button>
@@ -109,31 +173,39 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
                 item.isEditing ? (
                   <React.Fragment key={item.id}>
                     <input
+                      autoFocus
+                      onBlur={() => handleSetEditing(item.id, !item.isEditing)}
                       type="text"
                       value={item.value}
                       onChange={(e) => handleEditValue(item.id, e.target.value)}
                     />
-                    <button
-                      onClick={() => handleSetEditing(item.id, !item.isEditing)}
-                    >
-                      Concluir alteração
-                    </button>
                   </React.Fragment>
                 ) : (
-                  <li
-                    key={item.id}
-                    onClick={() => handleSetEditing(item.id, !item.isEditing)}
-                  >
-                    {Boolean(item.value)
-                      ? item.value
-                      : "Clique aqui para editar o conteúdo..."}
+                  <li key={item.id}>
+                    <p
+                      onClick={() => handleSetEditing(item.id, !item.isEditing)}
+                    >
+                      {Boolean(item.value) ? (
+                        item.type === "link" ? (
+                          <a href="#">{item.value}</a>
+                        ) : (
+                          `${item.value}`
+                        )
+                      ) : (
+                        "Clique aqui para editar o conteúdo..."
+                      )}
+                    </p>
+                    <button
+                      onClick={() => handleDeleteContent(item.id)}
+                      type="button"
+                    >
+                      <Trash />
+                    </button>
                   </li>
                 )
               )}
             </ul>
           )}
-          {/* json
-          <pre>{JSON.stringify(content, null, 2)}</pre> */}
         </div>
       </Modal>
     </div>

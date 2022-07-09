@@ -18,17 +18,6 @@
   margin-top: 1rem;
 }
 
-.content a {
-  font-weight: bold;
-  color: var(--green-500);
-  text-decoration: none;
-}
-
-.content a:hover {
-  color: var(--green-300);
-  text-decoration: underline;
-}
-
 .post > header {
   display: flex;
   align-items: center;
