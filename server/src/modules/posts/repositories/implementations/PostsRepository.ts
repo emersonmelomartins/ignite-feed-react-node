@@ -32,6 +32,7 @@ export class PostsRepository implements IPostsRepository {
           post_id: post.id,
           type: c.type,
           value: c.value,
+          order: c.order,
         });
 
         await queryRunner.manager.save(Content, currentContent);
@@ -76,6 +77,12 @@ export class PostsRepository implements IPostsRepository {
   async list(): Promise<Post[]> {
     return await this.repository.find({
       relations: ["content", "comments", "user"],
+      order: {
+        content: {
+          order: "ASC",
+        },
+        created_at: "DESC"
+      },
     });
   }
 }
