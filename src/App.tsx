@@ -19,6 +19,7 @@ export function App() {
         closeOnClick
         pauseOnHover
         theme="colored"
+        style={{zIndex: "99999999"}}
       />
       <MainRoutes />
     </AuthContextProvider>

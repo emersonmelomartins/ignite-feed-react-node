@@ -71,16 +71,6 @@ button[type="submit"]:disabled {
   font-size: 0.875rem;
 }
 
-.formContainer footer .signup a {
-  text-decoration: none;
-  color: var(--green-500);
-}
-
-.formContainer footer .signup a:hover {
-  text-decoration: none;
-  color: var(--green-300);
-}
-
 .backButton {
   text-decoration: none;
   color: var(--green-500);

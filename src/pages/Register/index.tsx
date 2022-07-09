@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import igniteLogo from "../../assets/ignite-logo.svg";
 import styles from "./Register.module.css";
 import { ArrowLeft } from "phosphor-react";
+import { toast } from "react-toastify";
 
 export function Register() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ export function Register() {
   async function handleRegister(e: FormEvent) {
     e.preventDefault();
     const res = await register(name, email, password, role);
+
+    toast.success("Usuário criado com sucesso!")
 
     if (res) navigate("/");
   }
