@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./src/assets/logo.svg" />
+    <img src="./web/src/assets/ignite-logo.svg" />
 <h1 align="center">Ignite Feed</h1>
 </div>
 
@@ -12,12 +12,12 @@ Uma aplicação simulando uma rede social de artigos, inicialmente foi um exerci
 ## Preview
 
 <p align="left">
-  <img src="./github__assets/preview-01.png" width=300 alt="Página de login" />
-  <img src="./github__assets/preview-02.png" width=300 alt="Página de cadastro" />
+  <img src="./github__assets/preview-01.png" width=350 alt="Página de login" />
+  <img src="./github__assets/preview-02.png" width=373 alt="Página de cadastro" />
 </p>
 <p align="left">
-  <img src="./github__assets/preview-03.png" width=300 alt="Página de postagens" />
-  <img src="./github__assets/preview-04.png" width=300 alt="Página de criação de nova postagem" />
+  <img src="./github__assets/preview-03.png" width=350 alt="Página de postagens" />
+  <img src="./github__assets/preview-04.png" width=350 alt="Página de criação de nova postagem" />
 </p>
 
 ## Layout
