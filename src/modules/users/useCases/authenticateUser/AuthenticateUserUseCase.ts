@@ -1,10 +1,10 @@
-import { sign } from 'jsonwebtoken';
+import { sign } from "jsonwebtoken";
 import { compare } from "bcryptjs";
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { AuthenticateUserError } from "./AuthenticateUserError";
 
-import authConfig from '../../../../config/auth';
+import authConfig from "../../../../config/auth";
 
 interface IRequest {
   email: string;
@@ -13,10 +13,10 @@ interface IRequest {
 
 interface IResponse {
   token: string;
-  user: {
-    name: string;
-    email: string;
-  }
+  name: string;
+  email: string;
+  role: string;
+  avatar: string | null;
 }
 
 @injectable()
@@ -31,30 +31,31 @@ export class AuthenticateUserUseCase {
   }
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
-
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
       throw new AuthenticateUserError.IncorrectUserOrPassword();
     }
 
-    const comparePassword = compare(password, user.password);
+    const comparePassword = await compare(password, user.password);
 
     if (!comparePassword) {
       throw new AuthenticateUserError.IncorrectUserOrPassword();
     }
 
-    const token = sign({id: user.id!}, authConfig.secret, {
+    const token = sign({ id: user.id! }, authConfig.secret, {
       // subject: user.id,
-      expiresIn: authConfig.expiresIn
-    })
+      expiresIn: authConfig.expiresIn,
+    });
 
-    return {
+    const response: IResponse = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
       token,
-      user: {
-        name: user.name,
-        email,
-      }
-    }
+    };
+
+    return response;
   }
 }

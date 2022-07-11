@@ -1,4 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { 
+  Column, 
+  Entity, 
+  JoinColumn, 
+  ManyToOne, 
+  PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Post } from "./Post";
 
@@ -24,6 +29,9 @@ export class Content {
 
   @Column()
   value: string;
+
+  @Column()
+  order: number;
 
   constructor() {
     if (!this.id) {

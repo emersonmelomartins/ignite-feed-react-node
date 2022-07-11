@@ -19,7 +19,7 @@ export class CommentsRepository implements ICommentsRepository {
     return comment;
   }
 
-  async findAll(): Promise<Comment[]> {
+  async list(): Promise<Comment[]> {
     const repositories = await this.repository.find();
 
     return repositories;
