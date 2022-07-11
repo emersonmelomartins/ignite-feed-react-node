@@ -35,6 +35,7 @@ interface Post {
     name: string;
     role: string;
     avatar: string | null;
+    email: string;
   };
 }
 

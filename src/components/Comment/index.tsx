@@ -1,31 +1,64 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 import { ThumbsUp, Trash } from "phosphor-react";
-import { useState } from "react";
+import defaultAvatarPng from "../../assets/default-avatar.png";
+import { useAuth } from "../../hooks/useAuth";
 import { Avatar } from "../Avatar";
 import styles from "./Comment.module.css";
 
 interface CommentProps {
+  id: string;
   content: string;
   likes: number;
-  onDeleteComment: (comment: string) => void;
+  created_at: string;
+  author: {
+    avatar: string | null;
+    name: string;
+    role: string;
+    email: string;
+  };
+  onDeleteComment: (comment_id: string) => void;
+  onGiveLike: (comment_id: string) => void;
 }
 
-export function Comment({ content, likes, onDeleteComment }: CommentProps) {
-  // const [likeCount, setLikeCount] = useState(0);
+export function Comment({
+  id,
+  content,
+  likes,
+  created_at,
+  author,
+  onDeleteComment,
+  onGiveLike,
+}: CommentProps) {
+  const {user} = useAuth();
+
+  const publishedAtToDate = new Date(created_at);
+
+  const publishedDateFormatted = format(
+    publishedAtToDate,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBR,
+    }
+  );
+
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
+    locale: ptBR,
+    addSuffix: true,
+  });
 
   function handleDeleteComment() {
-    // onDeleteComment(content);
+    onDeleteComment(id);
   }
 
   function handleLikeIncrement() {
-    // setLikeCount((state) => {
-    //   return state + 1;
-    // });
+    onGiveLike(id);
   }
   return (
     <div className={styles.comment}>
       <Avatar
         hasBorder={false}
-        src="https://github.com/emersonmelomartins.png"
+        src={author.avatar ?? defaultAvatarPng}
         alt=""
       />
 
@@ -33,15 +66,21 @@ export function Comment({ content, likes, onDeleteComment }: CommentProps) {
         <div className={styles.commentContent}>
           <header>
             <div className={styles.authorAndTime}>
-              <strong>Emerson Melo</strong>
-              <time title="11 de maio as 08:13" dateTime="2022-05-11 08:13:27">
-                Cerca de 1h atrás
+              <strong>{author.name}</strong>
+              <time
+                title={publishedDateFormatted}
+                dateTime={publishedAtToDate.toISOString()}
+              >
+                {publishedDateRelativeToNow}
               </time>
             </div>
 
+            {user.email === author.email && (
             <button onClick={handleDeleteComment} title="Deletar comentário">
               <Trash size={20} />
             </button>
+
+            )}
           </header>
 
           <p>{content}</p>
