@@ -20,11 +20,11 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return await this.repository.findOne({
-      where: {
-        email,
-      },
-    });
+    return await this.repository
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email })
+      .addSelect("user.password")
+      .getOne();
   }
 
   async create(data: ICreateUserDTO): Promise<User> {

@@ -1,0 +1,72 @@
+.wrapper {
+  max-width: 70rem;
+  height: 80vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+
+.titleContainer img {
+  display: block;
+  margin: 0 auto;
+  width: 6rem;
+  margin-bottom: 1rem;
+}
+
+.titleContainer h1 {
+  max-width: 70%;
+  text-transform: uppercase;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.titleContainer h1 {
+  font-size: 2.5rem;
+}
+
+.formContainer {
+  background-color: var(--gray-800);
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 25rem;
+}
+
+.formContainer label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+button[type="submit"] {
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 0;
+  background: var(--green-500);
+  color: var(--white);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  width: 100%;
+}
+
+button[type="submit"]:not(:disabled):hover {
+  background: var(--green-300);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.formContainer footer .signup {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formContainer footer .signup span, .formContainer footer .signup a {
+  font-size: 0.875rem;
+}

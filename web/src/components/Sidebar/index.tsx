@@ -1,9 +1,21 @@
 import { PencilLine } from "phosphor-react";
+import { FormEvent } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import { Avatar } from "../Avatar";
+
+import defaultUserAvatarPng from "../../assets/default-avatar.png";
 
 import styles from "./Sidebar.module.css";
 
 export function Sidebar() {
+  const { logout, user } = useAuth();
+
+  function handleLogout(event: FormEvent) {
+    event.preventDefault();
+
+    logout();
+  }
+
   return (
     <aside className={styles.sidebar}>
       <img
@@ -12,16 +24,19 @@ export function Sidebar() {
       />
 
       <div className={styles.profile}>
-        <Avatar src="https://avatars.githubusercontent.com/u/42918667?v=4" />
-        <strong>Emerson Melo</strong>
-        <span>Web Developer</span>
+        <Avatar src={user.avatar ?? defaultUserAvatarPng} />
+        <strong>{user.name}</strong>
+        <span>{user.role}</span>
       </div>
 
       <footer>
-        <a href="#">
+        <button type="button">
           <PencilLine size={20} />
           Editar seu perfil
-        </a>
+        </button>
+        <button type="button" onClick={handleLogout}>
+          Sair
+        </button>
       </footer>
     </aside>
   );

@@ -5,4 +5,5 @@ export interface IPostsRepository {
   create(data: ICreatePostDTO): Promise<ICreatePostDTO>;
   findByUser(user_id: string): Promise<Post[]>;
   findById(id: string): Promise<Post | null>;
+  list(): Promise<Post[]>
 }

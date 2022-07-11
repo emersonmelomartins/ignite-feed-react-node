@@ -4,12 +4,14 @@ import { CreatePostController } from "@modules/posts/useCases/createPost/CreateP
 import { GetPostController } from "@modules/posts/useCases/getPost/GetPostController";
 import { GiveCommentLikeController } from "@modules/posts/useCases/giveCommentLike/GiveCommentLikeController";
 import { ListCommentsController } from "@modules/posts/useCases/listComments/ListCommentsController";
+import { ListPostsController } from "@modules/posts/useCases/listPosts/ListPostsController";
 import { Router } from "express";
 
 export const postsRoutes = Router();
 
 const createPostController = new CreatePostController();
 const getPostController = new GetPostController();
+const listPostsController = new ListPostsController();
 const createCommentController = new CreateCommentController();
 const giveCommentLikeController = new GiveCommentLikeController();
 const listCommentsController = new ListCommentsController();
@@ -62,7 +64,7 @@ const listCommentsController = new ListCommentsController();
  *        description: Internal server error
  */
 postsRoutes.post("/", ensureAuthenticated, createPostController.handle);
-
+postsRoutes.get("/", ensureAuthenticated, listPostsController.handle);
 postsRoutes.get("/:post_id", ensureAuthenticated, getPostController.handle);
 
 postsRoutes.post(

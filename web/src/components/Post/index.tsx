@@ -9,6 +9,8 @@ import {
 } from "react";
 import { api } from "../../services/api";
 
+import defaultAvatarPng from "../../assets/default-avatar.png";
+
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 
@@ -27,55 +29,57 @@ interface Content {
 }
 
 interface Author {
-  avatar: string;
+  avatar: string | null;
   name: string;
   role: string;
 }
 
 interface Comment {
-  id: string;
+  id?: string;
   likes: number;
   commentary: string;
 }
 
 export function Post({ id, author, content, publishedAt }: PostProps) {
+  const [commentary, setCommentary] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
-  const [commentText, setCommentText] = useState("");
 
   useEffect(() => {
-    api
-      .get("/posts/cbb39370-398c-4fdd-ae58-a356e005f7dd/comments")
-      .then((resp) => {
-        console.log(resp.data);
-        setComments(resp.data);
-      });
+    api.get(`/posts/${id}/comments`).then((resp) => {
+      setComments(resp.data);
+    });
   }, []);
 
-  // const publishedAtToDate = new Date(publishedAt)
+  const publishedAtToDate = new Date(publishedAt);
 
-  // const publishedDateFormatted = format(
-  //   publishedAtToDate,
-  //   "d 'de' LLLL 'às' HH:mm'h'",
-  //   {
-  //     locale: ptBR,
-  //   }
-  // );
+  const publishedDateFormatted = format(
+    publishedAtToDate,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBR,
+    }
+  );
 
-  // const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
-  //   locale: ptBR,
-  //   addSuffix: true,
-  // });
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
+    locale: ptBR,
+    addSuffix: true,
+  });
 
-  function handleCreateNewComment(event: FormEvent) {
-    // event.preventDefault();
+  async function handleCreateNewComment(event: FormEvent) {
+    event.preventDefault();
 
-    // setComments([...comments, commentText]);
-    // setCommentText("");
+    const newComment = await api.post(`/posts/${id}/comment`, {
+      likes: 0,
+      commentary,
+    });
+
+    setComments([...comments, newComment.data]);
+    setCommentary("");
   }
 
   function handleChangeNewComment(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("");
-    setCommentText(event.target.value);
+    setCommentary(event.target.value);
   }
 
   function deleteComment(currentComment: string) {
@@ -89,13 +93,13 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
     event.target.setCustomValidity("Esse campo é obrigatório");
   }
 
-  const isNewCommentEmpty = commentText.length === 0;
+  const isNewCommentEmpty = commentary.length === 0;
 
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatar} />
+          <Avatar src={author.avatar ?? defaultAvatarPng} />
 
           <div className={styles.authorInfo}>
             <strong>{author.name}</strong>
@@ -104,10 +108,10 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
         </div>
 
         <time
-        // title={publishedDateFormatted}
-        // dateTime={publishedAtToDate.toISOString()}
+          title={publishedDateFormatted}
+          dateTime={publishedAtToDate.toISOString()}
         >
-          {/* {publishedDateRelativeToNow} */}
+          {publishedDateRelativeToNow}
         </time>
       </header>
 
@@ -130,7 +134,7 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
 
         <textarea
           placeholder="Deixe um comentário"
-          value={commentText}
+          value={commentary}
           onChange={handleChangeNewComment}
           onInvalid={handleNewCommentInvalid}
           required
