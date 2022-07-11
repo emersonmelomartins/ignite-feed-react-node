@@ -1,6 +1,7 @@
 import { ensureAuthenticated } from "@middlewares/ensureAuthenticated";
 import { CreateCommentController } from "@modules/posts/useCases/createComment/CreateCommentController";
 import { CreatePostController } from "@modules/posts/useCases/createPost/CreatePostController";
+import { DeleteCommentController } from "@modules/posts/useCases/deleteComment/DeleteCommentController";
 import { GetPostController } from "@modules/posts/useCases/getPost/GetPostController";
 import { GiveCommentLikeController } from "@modules/posts/useCases/giveCommentLike/GiveCommentLikeController";
 import { ListCommentsController } from "@modules/posts/useCases/listComments/ListCommentsController";
@@ -15,6 +16,7 @@ const listPostsController = new ListPostsController();
 const createCommentController = new CreateCommentController();
 const giveCommentLikeController = new GiveCommentLikeController();
 const listCommentsController = new ListCommentsController();
+const deleteCommentController = new DeleteCommentController();
 
 /**
  * @openapi
@@ -83,4 +85,10 @@ postsRoutes.get(
   "/:post_id/comments",
   ensureAuthenticated,
   listCommentsController.handle
+);
+
+postsRoutes.delete(
+  "/:post_id/comment/:comment_id",
+  ensureAuthenticated,
+  deleteCommentController.handle
 );
