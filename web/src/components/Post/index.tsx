@@ -21,7 +21,6 @@ interface PostProps {
   author: Author;
   content: Content[];
   publishedAt: string;
-  comments: Comment[];
 }
 
 interface Content {
@@ -36,44 +35,51 @@ interface Author {
 }
 
 interface Comment {
-  id: string;
+  id?: string;
   likes: number;
   commentary: string;
 }
 
-export function Post({
-  id,
-  author,
-  content,
-  comments,
-  publishedAt,
-}: PostProps) {
-  const [commentText, setCommentText] = useState("");
+export function Post({ id, author, content, publishedAt }: PostProps) {
+  const [commentary, setCommentary] = useState("");
+  const [comments, setComments] = useState<Comment[]>([]);
 
-  // const publishedAtToDate = new Date(publishedAt)
+  useEffect(() => {
+    api.get(`/posts/${id}/comments`).then((resp) => {
+      setComments(resp.data);
+    });
+  }, []);
 
-  // const publishedDateFormatted = format(
-  //   publishedAtToDate,
-  //   "d 'de' LLLL 'às' HH:mm'h'",
-  //   {
-  //     locale: ptBR,
-  //   }
-  // );
+  const publishedAtToDate = new Date(publishedAt);
 
-  // const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
-  //   locale: ptBR,
-  //   addSuffix: true,
-  // });
+  const publishedDateFormatted = format(
+    publishedAtToDate,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBR,
+    }
+  );
 
-  function handleCreateNewComment(event: FormEvent) {
-    // event.preventDefault();
-    // setComments([...comments, commentText]);
-    // setCommentText("");
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAtToDate, {
+    locale: ptBR,
+    addSuffix: true,
+  });
+
+  async function handleCreateNewComment(event: FormEvent) {
+    event.preventDefault();
+
+    const newComment = await api.post(`/posts/${id}/comment`, {
+      likes: 0,
+      commentary,
+    });
+
+    setComments([...comments, newComment.data]);
+    setCommentary("");
   }
 
   function handleChangeNewComment(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity("");
-    setCommentText(event.target.value);
+    setCommentary(event.target.value);
   }
 
   function deleteComment(currentComment: string) {
@@ -87,7 +93,7 @@ export function Post({
     event.target.setCustomValidity("Esse campo é obrigatório");
   }
 
-  const isNewCommentEmpty = commentText.length === 0;
+  const isNewCommentEmpty = commentary.length === 0;
 
   return (
     <article className={styles.post}>
@@ -102,10 +108,10 @@ export function Post({
         </div>
 
         <time
-        // title={publishedDateFormatted}
-        // dateTime={publishedAtToDate.toISOString()}
+          title={publishedDateFormatted}
+          dateTime={publishedAtToDate.toISOString()}
         >
-          {/* {publishedDateRelativeToNow} */}
+          {publishedDateRelativeToNow}
         </time>
       </header>
 
@@ -128,7 +134,7 @@ export function Post({
 
         <textarea
           placeholder="Deixe um comentário"
-          value={commentText}
+          value={commentary}
           onChange={handleChangeNewComment}
           onInvalid={handleNewCommentInvalid}
           required

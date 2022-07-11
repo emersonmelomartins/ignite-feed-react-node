@@ -77,7 +77,6 @@ export function Home() {
               author={post.user}
               content={post.content}
               publishedAt={post.created_at}
-              comments={post.comments}
             />
           ))}
         </main>
