@@ -1,5 +1,6 @@
 import { ICreateCommentDTO } from "@modules/posts/dtos/ICreateCommentDTO";
 import { Comment } from "@modules/posts/entities/Comment";
+import { AppError } from "@shared/errors/AppError";
 import { AppDataSource } from "database";
 import { Repository } from "typeorm";
 import { ICommentsRepository } from "../ICommentsRepository";
@@ -12,11 +13,18 @@ export class CommentsRepository implements ICommentsRepository {
   }
 
   async create(data: ICreateCommentDTO): Promise<Comment> {
-    const comment = this.repository.create(data);
+    const newComment = this.repository.create(data);
 
-    await this.repository.save(comment);
+    await this.repository.save(newComment);
 
-    return comment;
+    const comment = await this.repository.findOne({
+      where: {
+        id: newComment.id,
+      },
+      relations: ["user"],
+    });
+
+    return comment!;
   }
 
   async list(): Promise<Comment[]> {
@@ -41,9 +49,14 @@ export class CommentsRepository implements ICommentsRepository {
     const comments = await this.repository.find({
       where: {
         post_id,
-      }
+      },
+      relations: ["user"],
     });
 
     return comments;
+  }
+
+  async delete(comment_id: string): Promise<void> {
+    await this.repository.delete({ id: comment_id });
   }
 }
