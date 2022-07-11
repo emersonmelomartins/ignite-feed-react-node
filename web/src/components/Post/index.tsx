@@ -32,12 +32,15 @@ interface Author {
   avatar: string | null;
   name: string;
   role: string;
+  email: string;
 }
 
 interface Comment {
   id?: string;
   likes: number;
   commentary: string;
+  created_at: string;
+  user: Author;
 }
 
 export function Post({ id, author, content, publishedAt }: PostProps) {
@@ -82,11 +85,27 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
     setCommentary(event.target.value);
   }
 
-  function deleteComment(currentComment: string) {
-    // const updatedComments = comments.filter(
-    //   (comment) => comment !== currentComment
-    // );
-    // setComments(updatedComments);
+  async function deleteComment(comment_id: string) {
+    await api.delete(`/posts/${id}/comment/${comment_id}`);
+
+    const updatedComments = comments.filter(
+      (comment) => comment.id !== comment_id
+    );
+    setComments(updatedComments);
+  }
+
+  async function onGiveLike(comment_id: string) {
+    await api.patch(`/posts/comment/${comment_id}/like`);
+
+    const updatedComments = comments.map((comment) => {
+      if (comment.id === comment_id) {
+        return { ...comment, likes: comment.likes + 1 };
+      }
+
+      return comment;
+    });
+
+    setComments(updatedComments);
   }
 
   function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
@@ -151,9 +170,13 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
         {comments.map((comment) => (
           <Comment
             key={comment.id}
+            id={comment.id!}
+            author={comment.user}
+            created_at={comment.created_at}
             content={comment.commentary}
             likes={comment.likes}
             onDeleteComment={deleteComment}
+            onGiveLike={onGiveLike}
           />
         ))}
       </div>
