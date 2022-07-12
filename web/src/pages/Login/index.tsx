@@ -7,7 +7,7 @@ import styles from "./Login.module.css";
 
 export function Login() {
   const navigate = useNavigate();
-  const { signed, login, register } = useAuth();
+  const { signed, login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

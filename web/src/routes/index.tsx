@@ -4,6 +4,7 @@ import { Header } from "../components/Header";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
+import { Profile } from "../pages/Profile";
 
 export function MainRoutes() {
   return (
@@ -16,6 +17,7 @@ export function MainRoutes() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

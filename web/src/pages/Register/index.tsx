@@ -20,7 +20,7 @@ export function Register() {
     e.preventDefault();
     const res = await register(name, email, password, role);
 
-    toast.success("Usuário criado com sucesso!")
+    toast.success("Usuário criado com sucesso!");
 
     if (res) navigate("/");
   }
@@ -39,6 +39,7 @@ export function Register() {
             name="name"
             id="name"
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
 
           <br />
@@ -49,6 +50,7 @@ export function Register() {
             name="email"
             id="email"
             onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
 
           <label htmlFor="password">Senha</label>
@@ -57,6 +59,7 @@ export function Register() {
             name="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
 
           <label htmlFor="role">Função/Cargo Atual</label>
@@ -65,6 +68,7 @@ export function Register() {
             name="role"
             id="role"
             onChange={(e) => setRole(e.target.value)}
+            value={role}
           />
 
           <footer>
