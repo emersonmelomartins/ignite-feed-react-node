@@ -1,14 +1,21 @@
-import { GetUserProfileController } from "@modules/users/useCases/getUserProfile/GetUserProfileController";
-import { Router } from "express";
+import multer from "multer";
+import { Request, Response, Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
+
+import { GetUserProfileController } from "@modules/users/useCases/getUserProfile/GetUserProfileController";
 import { CreateUserController } from "../modules/users/useCases/createUser/CreateUserController";
 import { GetUsersController } from "../modules/users/useCases/getUsers/GetUsersController";
+import { UpdateUserAvatarController } from "@modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
+
+import uploadConfig from "@config/upload";
+const multerUpload = multer(uploadConfig);
 
 export const usersRoutes = Router();
 
 const getUsersController = new GetUsersController();
 const createUserController = new CreateUserController();
 const getUserProfileController = new GetUserProfileController();
+const updateUserAvatarController = new UpdateUserAvatarController();
 
 /**
  * @openapi
@@ -107,4 +114,10 @@ usersRoutes.get(
   "/profile",
   ensureAuthenticated,
   getUserProfileController.handle
+);
+
+usersRoutes.patch(
+  "/avatar",
+  multerUpload.single("avatar"),
+  updateUserAvatarController.handle
 );

@@ -11,7 +11,8 @@
       "@middlewares/*": ["middlewares/*"],
       "@shared/*": ["shared/*"],
       "@routes/*": ["routes/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@config/*": ["config/*"]
     },
     "resolveJsonModule": true,
     "outDir": "./build",
