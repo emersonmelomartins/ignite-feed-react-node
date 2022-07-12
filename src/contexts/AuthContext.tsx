@@ -33,16 +33,6 @@ export const AuthContext = createContext({} as AuthContextProps);
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useSessionStorage("APP::user-info", "");
 
-  const [signed, setSigned] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      if (user.hasOwnProperty("email") && user.hasOwnProperty("token")) {
-        setSigned(true);
-      }
-    }
-  }, []);
-
   async function login(email: string, password: string) {
     const { data } = await api.post("/sessions", {
       email,
@@ -50,12 +40,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     });
 
     setUser(data);
-    setSigned(true);
   }
 
   function logout() {
     sessionStorage.clear();
-    setSigned(false);
+    setUser("");
   }
 
   async function register(
@@ -80,7 +69,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         login,
         logout,
         register,
-        signed,
+        signed: Boolean(user),
         user,
       }}
     >

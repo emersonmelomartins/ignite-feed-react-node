@@ -56,6 +56,7 @@ export function Home() {
       setPosts(resp.data);
     });
   }, []);
+  
   return (
     <div>
       <div className={styles.wrapper}>

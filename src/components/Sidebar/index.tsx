@@ -1,5 +1,6 @@
 import { PencilLine } from "phosphor-react";
 import { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Avatar } from "../Avatar";
 
@@ -9,6 +10,7 @@ import styles from "./Sidebar.module.css";
 
 export function Sidebar() {
   const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
   function handleLogout(event: FormEvent) {
     event.preventDefault();
@@ -30,7 +32,7 @@ export function Sidebar() {
       </div>
 
       <footer>
-        <button type="button">
+        <button onClick={() => navigate("/profile")} type="button">
           <PencilLine size={20} />
           Editar seu perfil
         </button>
