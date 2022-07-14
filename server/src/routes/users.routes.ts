@@ -1,5 +1,5 @@
 import multer from "multer";
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 
 import { GetUserProfileController } from "@modules/users/useCases/getUserProfile/GetUserProfileController";
@@ -118,6 +118,7 @@ usersRoutes.get(
 
 usersRoutes.patch(
   "/avatar",
+  ensureAuthenticated,
   multerUpload.single("avatar"),
   updateUserAvatarController.handle
 );
