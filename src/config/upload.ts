@@ -32,8 +32,6 @@ export default {
 
     const mimetype = filetypes.test(file.mimetype);
 
-    console.log({ mimetype, extname, file });
-
     if (mimetype && extname) {
       return cb(null, true);
     } else {
