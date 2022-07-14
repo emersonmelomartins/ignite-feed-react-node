@@ -3,14 +3,17 @@ import { IUserResponseDTO } from "../dtos/IUserResponseDTO";
 import { User } from "../entities/User";
 
 export class UserMap {
-  static toDTO({ id, email, name, avatar, role }: User): IUserResponseDTO {
-    return instanceToInstance({
+  static toDTO({ id, email, name, avatar, avatar_url, role }: User): IUserResponseDTO {
+    const user =  instanceToInstance({
       id,
       email,
       name,
       avatar,
+      avatar_url,
       role,
     });
+
+    return user;
   }
 
   static ArrayToDTO([

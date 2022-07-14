@@ -1,3 +1,4 @@
+import { Expose } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -34,6 +35,11 @@ export class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({name: "avatar_url"})
+  avatar_url(): string {
+    return `${process.env.APP_URL}/avatar/${this.avatar}`
+  }
 
   constructor() {
     if (!this.id) {
