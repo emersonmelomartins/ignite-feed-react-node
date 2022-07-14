@@ -35,8 +35,6 @@ export class UpdateUserAvatarUseCase {
 
     user.avatar = filename;
 
-    console.log(user);
-
     await this.usersRepository.create(user);
   }
 }
