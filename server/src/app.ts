@@ -13,6 +13,8 @@ import "./shared/container";
 import { handleError } from "./middlewares/handleError";
 import { showLogInfo } from "./middlewares/showLogInfo";
 
+import uploadConfig from '@config/upload';
+
 AppDataSource.initialize();
 
 const app = express();
@@ -49,6 +51,8 @@ const swaggerSpec = swaggerJsdoc(options);
 app.use("/swagger", serve, setup(swaggerSpec));
 
 app.use(showLogInfo);
+
+app.use("/avatar", express.static(`${uploadConfig.tmpDestination}/avatar`))
 
 app.use(routes);
 

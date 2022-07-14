@@ -9,6 +9,8 @@ import { IPostsRepository } from "@modules/posts/repositories/IPostsRepository";
 import { UsersRepository } from "@modules/users/repositories/implementations/UsersRepository";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 
+import "./providers";
+
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
   UsersRepository
