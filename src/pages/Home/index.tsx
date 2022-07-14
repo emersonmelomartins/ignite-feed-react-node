@@ -1,6 +1,5 @@
 import { Plus } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { Header } from "../../components/Header";
 import { NewPostModal } from "../../components/NewPostModal";
 import { Post } from "../../components/Post";
 import { Sidebar } from "../../components/Sidebar";
@@ -35,6 +34,7 @@ interface Post {
     name: string;
     role: string;
     avatar: string | null;
+    avatar_url: string;
     email: string;
   };
 }

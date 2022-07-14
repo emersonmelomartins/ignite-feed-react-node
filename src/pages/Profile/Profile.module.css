@@ -71,7 +71,11 @@
   margin: 0 auto;
 }
 
-.avatarContainer button {
+.avatarContainer input {
+  display: none;
+}
+.avatarContainer label {
+  cursor: pointer;
   background: transparent;
   color: var(--green-500);
   border: 1px solid var(--green-500);
@@ -91,7 +95,7 @@
   transition: color 0.1s, background-color 0.1s;
 }
 
-.avatarContainer button:hover {
+.avatarContainer label:hover {
   background-color: var(--green-500);
   color: var(--white);
   cursor: pointer;

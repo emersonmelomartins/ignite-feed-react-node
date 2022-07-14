@@ -1,12 +1,21 @@
 import { ArrowLeft } from "phosphor-react";
-import { useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import { Avatar } from "../../components/Avatar";
 import defaultUserAvatarPng from "../../assets/default-avatar.png";
 import styles from "./Profile.module.css";
 import { api } from "../../services/api";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Profile() {
+  const { refreshUserInfo } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
@@ -19,10 +28,33 @@ export function Profile() {
       setRole(data.role);
       setAvatar(data.avatar);
       setEmail(data.email);
+
+      if (data.avatar) {
+        setAvatar(data.avatar_url);
+      }
     });
   }, []);
 
-  function handleUpdateProfile() {}
+  function handleUpdateProfile(event: FormEvent) {}
+
+  async function handleUpdateAvatar(event: ChangeEvent<HTMLInputElement>) {
+    const { files } = event.target;
+
+    if (!files) return;
+
+    const file = files[0];
+
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    await api.patch("/users/avatar", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    refreshUserInfo()
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -42,9 +74,19 @@ export function Profile() {
         <section className={styles.profile}>
           <div className="profileContainer">
             <div className={styles.avatarContainer}>
-              <Avatar src={null ?? defaultUserAvatarPng} />
+              <Avatar src={avatar ?? defaultUserAvatarPng} />
 
-              <button type="button">Alterar foto de perfil</button>
+              <label htmlFor="avatar">
+                Alterar foto de perfil
+                <input
+                  type="file"
+                  accept=".jpeg, .jpg, .png, .gif, .svg"
+                  multiple={false}
+                  id="avatar"
+                  name="avatar"
+                  onChange={handleUpdateAvatar}
+                />
+              </label>
             </div>
 
             <div className={styles.personalDataContainer}>

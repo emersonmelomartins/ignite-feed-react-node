@@ -30,6 +30,7 @@ interface Content {
 
 interface Author {
   avatar: string | null;
+  avatar_url: string;
   name: string;
   role: string;
   email: string;
@@ -118,7 +119,7 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatar ?? defaultAvatarPng} />
+          <Avatar src={author.avatar ? author.avatar_url : defaultAvatarPng} />
 
           <div className={styles.authorInfo}>
             <strong>{author.name}</strong>
