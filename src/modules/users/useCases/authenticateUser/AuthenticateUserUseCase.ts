@@ -5,6 +5,7 @@ import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { AuthenticateUserError } from "./AuthenticateUserError";
 
 import authConfig from "../../../../config/auth";
+import { UserMap } from "@modules/users/mapper/UserMap";
 
 interface IRequest {
   email: string;
@@ -17,6 +18,7 @@ interface IResponse {
   email: string;
   role: string;
   avatar: string | null;
+  avatar_url?: () => string;
 }
 
 @injectable()
@@ -48,11 +50,14 @@ export class AuthenticateUserUseCase {
       expiresIn: authConfig.expiresIn,
     });
 
+    const userMapper = UserMap.toDTO(user);
+
     const response: IResponse = {
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      avatar: user.avatar,
+      name: userMapper.name,
+      email: userMapper.email,
+      role: userMapper.role,
+      avatar: userMapper.avatar,
+      avatar_url: userMapper.avatar_url,
       token,
     };
 
