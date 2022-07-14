@@ -13,6 +13,7 @@ interface CommentProps {
   created_at: string;
   author: {
     avatar: string | null;
+    avatar_url: string;
     name: string;
     role: string;
     email: string;
@@ -30,7 +31,7 @@ export function Comment({
   onDeleteComment,
   onGiveLike,
 }: CommentProps) {
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const publishedAtToDate = new Date(created_at);
 
@@ -58,7 +59,7 @@ export function Comment({
     <div className={styles.comment}>
       <Avatar
         hasBorder={false}
-        src={author.avatar ?? defaultAvatarPng}
+        src={author.avatar ? author.avatar_url : defaultAvatarPng}
         alt=""
       />
 
@@ -76,10 +77,9 @@ export function Comment({
             </div>
 
             {user.email === author.email && (
-            <button onClick={handleDeleteComment} title="Deletar comentário">
-              <Trash size={20} />
-            </button>
-
+              <button onClick={handleDeleteComment} title="Deletar comentário">
+                <Trash size={20} />
+              </button>
             )}
           </header>
 

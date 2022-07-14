@@ -12,6 +12,7 @@ interface AuthContextProps {
     role: string,
     avatar?: string
   ) => Promise<boolean>;
+  refreshUserInfo: () => void;
   signed: boolean;
   user: User;
 }
@@ -25,6 +26,7 @@ interface User {
   email: string;
   role: string;
   avatar: string | null;
+  avatar_url: string;
   token: string;
 }
 
@@ -63,12 +65,32 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     return true;
   }
 
+  async function refreshUserInfo() {
+    if (!user) return;
+
+    const { data } = await api.get("/users/profile");
+
+    const updatedUser = {
+      token: user.token,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      avatar: data.avatar,
+      avatar_url: data.avatar_url,
+    };
+
+    setUser(updatedUser);
+
+    window.location.reload();
+  }
+
   return (
     <AuthContext.Provider
       value={{
         login,
         logout,
         register,
+        refreshUserInfo,
         signed: Boolean(user),
         user,
       }}

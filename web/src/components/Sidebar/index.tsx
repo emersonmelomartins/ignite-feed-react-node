@@ -26,7 +26,9 @@ export function Sidebar() {
       />
 
       <div className={styles.profile}>
-        <Avatar src={user.avatar ?? defaultUserAvatarPng} />
+        <Avatar
+          src={user.avatar !== null ? user.avatar_url : defaultUserAvatarPng}
+        />
         <strong>{user.name}</strong>
         <span>{user.role}</span>
       </div>
