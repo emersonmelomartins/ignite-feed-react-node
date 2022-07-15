@@ -11,7 +11,7 @@
     "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "build:tsc": "tsc",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
-    "start": "npm run build && node -r ts-node/register -r tsconfig-paths/register ./dist/src/shared/infra/http/server.js"
+    "start": "node -r ts-node/register -r tsconfig-paths/register ./dist/src/shared/infra/http/server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",
