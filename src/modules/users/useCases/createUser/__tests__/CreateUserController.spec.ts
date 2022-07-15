@@ -1,6 +1,7 @@
 import request from "supertest";
-import { app } from "../../../../../app";
-import { AppDataSource } from "../../../../../database";
+import fs from "fs";
+import { app } from "@shared/infra/http/app";
+import { AppDataSource } from "@shared/infra/typeorm";
 
 describe("Create User Controller", () => {
   beforeAll(async () => {
@@ -11,6 +12,18 @@ describe("Create User Controller", () => {
   afterAll(async () => {
     await AppDataSource.dropDatabase();
     await AppDataSource.destroy();
+
+    let exists = false;
+    const path = "./src/database/__test__ignite-feed.sql";
+
+    try {
+      await fs.promises.stat(path);
+      exists = true;
+    } catch (err) {}
+
+    if (exists) {
+      await fs.promises.unlink(path);
+    }
   });
 
   it("should create a new user", async () => {
@@ -25,5 +38,4 @@ describe("Create User Controller", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty("id");
   });
-  
 });

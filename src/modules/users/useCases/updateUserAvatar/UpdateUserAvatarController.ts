@@ -7,14 +7,9 @@ export class UpdateUserAvatarController {
     const { file } = request;
     const user_id = request.user;
 
-    if (!file) {
-      //...
-      return response.status(400).json(file);
-    }
-
     const updateUserAvatarUseCase = container.resolve(UpdateUserAvatarUseCase);
 
-    await updateUserAvatarUseCase.execute({ user_id, filename: file.filename });
+    await updateUserAvatarUseCase.execute({ user_id, filename: file?.filename });
 
     return response.status(204).send();
   }

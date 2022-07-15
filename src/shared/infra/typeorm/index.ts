@@ -7,7 +7,7 @@ export const AppDataSource = new DataSource({
       ? "./src/database/__test__ignite-feed.sql"
       : "./src/database/ignite-feed.sql",
   synchronize: false,
-  logging: process.env.NODE_ENV === "test",
+  logging: false,
   entities: ["./src/modules/**/entities/*.ts"],
   migrations: ["./src/shared/infra/typeorm/migrations/*.ts"],
 });
