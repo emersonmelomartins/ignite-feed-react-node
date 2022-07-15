@@ -1,16 +1,11 @@
-import { 
-  Column, 
-  Entity, 
-  JoinColumn, 
-  ManyToOne, 
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Post } from "./Post";
-
-export enum ContentTypeEnum {
-  PARAGRAPH = "paragraph",
-  LINK = "link",
-}
 
 @Entity("contents")
 export class Content {
@@ -25,7 +20,7 @@ export class Content {
   post_id: string;
 
   @Column()
-  type: ContentTypeEnum;
+  type: string;
 
   @Column()
   value: string;
