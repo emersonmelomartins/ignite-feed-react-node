@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { AppDataSource } from "../../../../database";
+import { AppDataSource } from "@shared/infra/typeorm";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 import { User } from "../../entities/User";
 import { IUsersRepository } from "../IUsersRepository";

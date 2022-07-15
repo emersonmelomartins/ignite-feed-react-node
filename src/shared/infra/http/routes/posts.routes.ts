@@ -1,4 +1,4 @@
-import { ensureAuthenticated } from "@middlewares/ensureAuthenticated";
+import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 import { CreateCommentController } from "@modules/posts/useCases/createComment/CreateCommentController";
 import { CreatePostController } from "@modules/posts/useCases/createPost/CreatePostController";
 import { DeleteCommentController } from "@modules/posts/useCases/deleteComment/DeleteCommentController";

@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { IStorageProvider } from "@shared/container/providers/IStorageProvider";
-import { AppError } from "@shared/errors/AppError";
+import { UpdateUserAvatarError } from "./UpdateUserAvatarError";
 
 interface IRequest {
   user_id: string;
@@ -23,8 +23,8 @@ export class UpdateUserAvatarUseCase {
 
     if (!user) {
       this.localStorageProvider.delete(filename, "");
-      
-      throw new AppError("User not found");
+
+      throw new UpdateUserAvatarError.UserNotFound();
     }
 
     if (user.avatar) {

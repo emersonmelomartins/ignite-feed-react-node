@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --respawn --transpile-only src/shared/infra/http/server.ts",
     "test": "NODE_ENV=test jest",
-    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d ./src/database/index.ts",
-    "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d ./src/database/index.ts"
+    "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d ./src/shared/infra/typeorm/index.ts",
+    "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d ./src/shared/infra/typeorm/index.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
