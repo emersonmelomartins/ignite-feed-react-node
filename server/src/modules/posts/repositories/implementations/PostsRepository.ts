@@ -3,7 +3,7 @@ import { ICreatePostDTO } from "@modules/posts/dtos/ICreatePostDTO";
 import { Content } from "@modules/posts/entities/Content";
 import { Post } from "@modules/posts/entities/Post";
 import { AppError } from "@shared/errors/AppError";
-import { AppDataSource } from "../../../../database";
+import { AppDataSource } from "@shared/infra/typeorm";
 import { IPostsRepository } from "../IPostsRepository";
 
 export class PostsRepository implements IPostsRepository {

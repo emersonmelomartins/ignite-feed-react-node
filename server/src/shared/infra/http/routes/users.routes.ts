@@ -3,8 +3,8 @@ import { Router } from "express";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 
 import { GetUserProfileController } from "@modules/users/useCases/getUserProfile/GetUserProfileController";
-import { CreateUserController } from "../modules/users/useCases/createUser/CreateUserController";
-import { GetUsersController } from "../modules/users/useCases/getUsers/GetUsersController";
+import { CreateUserController } from "@modules/users/useCases/createUser/CreateUserController";
+import { GetUsersController } from "@modules/users/useCases/getUsers/GetUsersController";
 import { UpdateUserAvatarController } from "@modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
 
 import uploadConfig from "@config/upload";

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { format } from "date-fns";
-import { getDurationInMilliseconds } from "../utils/getDurationInMilliseconds";
+import { getDurationInMilliseconds } from "@utils/getDurationInMilliseconds";
 
 export function showLogInfo(
   request: Request,

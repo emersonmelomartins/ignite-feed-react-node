@@ -1,7 +1,6 @@
 import { ICreateCommentDTO } from "@modules/posts/dtos/ICreateCommentDTO";
 import { Comment } from "@modules/posts/entities/Comment";
-import { AppError } from "@shared/errors/AppError";
-import { AppDataSource } from "database";
+import { AppDataSource } from "@shared/infra/typeorm";
 import { Repository } from "typeorm";
 import { ICommentsRepository } from "../ICommentsRepository";
 
