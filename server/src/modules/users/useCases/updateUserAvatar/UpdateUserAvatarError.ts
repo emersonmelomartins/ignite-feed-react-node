@@ -6,4 +6,10 @@ export namespace UpdateUserAvatarError {
       super("User not found", 404);
     }
   }
+
+  export class FileNotFound extends AppError {
+    constructor() {
+      super("File not found", 404);
+    }
+  }
 }

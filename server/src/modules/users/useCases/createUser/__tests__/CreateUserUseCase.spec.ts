@@ -57,7 +57,7 @@ describe("Create User", () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it("should not create a new user if password is not at least 6 charactes", async () => {
+  it("should not create a new user if password is not at least 6 characters", async () => {
     await expect(
       createUserUseCase.execute({
         avatar: "",

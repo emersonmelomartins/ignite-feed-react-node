@@ -2,10 +2,11 @@ import { inject, injectable } from "tsyringe";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { IStorageProvider } from "@shared/container/providers/IStorageProvider";
 import { UpdateUserAvatarError } from "./UpdateUserAvatarError";
+import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
   user_id: string;
-  filename: string;
+  filename?: string;
 }
 
 @injectable()
@@ -19,6 +20,10 @@ export class UpdateUserAvatarUseCase {
   ) {}
 
   async execute({ user_id, filename }: IRequest): Promise<void> {
+    if (!filename) {
+      throw new UpdateUserAvatarError.FileNotFound();
+    }
+
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {

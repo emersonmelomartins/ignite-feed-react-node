@@ -1,9 +1,11 @@
 import { inject, injectable } from "tsyringe";
+import { hash } from "bcryptjs";
+import { AppError } from "@shared/errors/AppError";
+import { IUserResponseDTO } from "@modules/users/dtos/IUserResponseDTO";
+import { UserMap } from "@modules/users/mapper/UserMap";
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { CreateUserError } from "./CreateUserError";
-import { hash } from "bcryptjs";
-import { IUserResponseDTO } from "@modules/users/dtos/IUserResponseDTO";
 import { CreateUserSchema } from "./CreateUserSchema";
 
 @injectable()
@@ -16,7 +18,11 @@ export class CreateUserUseCase {
   async execute(data: ICreateUserDTO): Promise<IUserResponseDTO> {
     const schema = new CreateUserSchema();
 
-    await schema.validate(data);
+    try {
+      await schema.validate(data);
+    } catch (err) {
+      throw new AppError((err as Error).message);
+    }
 
     const userExists = await this.usersRepository.findByEmail(data.email);
 
@@ -28,16 +34,10 @@ export class CreateUserUseCase {
 
     data.password = encryptedPassword;
 
-    const { avatar, email, name, role, id } = await this.usersRepository.create(
-      data
-    );
+    const user = await this.usersRepository.create(data);
 
-    return {
-      id,
-      name,
-      email,
-      role,
-      avatar,
-    };
+    const response = UserMap.toDTO(user);
+
+    return response;
   }
 }

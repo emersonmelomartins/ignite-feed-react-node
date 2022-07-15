@@ -1,6 +1,5 @@
 import Joi from "joi";
 import { ICreateUserDTO } from "@modules/users/dtos/ICreateUserDTO";
-import { AppError } from "@shared/errors/AppError";
 
 export class CreateUserSchema {
   async validate({ avatar, email, name, password, role }: ICreateUserDTO) {
@@ -18,16 +17,12 @@ export class CreateUserSchema {
         "{{#label}} length must be less than or equal to {{#limit}} characters long",
     });
 
-    try {
-      return await schema.validateAsync({
-        avatar,
-        email,
-        name,
-        password,
-        role,
-      });
-    } catch (err) {
-      throw new AppError((err as Error).message);
-    }
+    return await schema.validateAsync({
+      avatar,
+      email,
+      name,
+      password,
+      role,
+    });
   }
 }
