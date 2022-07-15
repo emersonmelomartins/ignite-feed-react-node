@@ -47,7 +47,7 @@ const options: swaggerJsdoc.Options = {
     //   },
     // ],
   },
-  apis: ["./src/routes/*.routes.ts"],
+  apis: ["./src/shared/infra/http/routes/*.routes.ts"],
 };
 const swaggerSpec = swaggerJsdoc(options);
 app.use("/swagger", serve, setup(swaggerSpec));

@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --respawn --transpile-only src/shared/infra/http/server.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --respawn --transpile-only src/shared/infra/http/server.ts",
     "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d ./src/shared/infra/typeorm/index.ts",
     "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d ./src/shared/infra/typeorm/index.ts",
     "fake:png": "ts-node-dev fake-image-generator --size 1024 --extension png --output ./tmp",
