@@ -6,6 +6,7 @@
     "module": "commonjs",
     "rootDir": "./",
     "baseUrl": "./src",
+    "typeRoots" : ["./src/@types", "./node_modules/@types"],
     "paths": {
       "@modules/*": ["modules/*"],
       "@shared/*": ["shared/*"],
@@ -13,12 +14,17 @@
       "@config/*": ["config/*"]
     },
     "resolveJsonModule": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+  },
+
+  "exclude": ["node_modules", "dist", "tests"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }
