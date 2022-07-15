@@ -7,11 +7,10 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --ignore-watch node_modules --respawn --transpile-only src/shared/infra/http/server.ts",
     "migration:run": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:run -d ./src/shared/infra/typeorm/index.ts",
     "migration:revert": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli migration:revert -d ./src/shared/infra/typeorm/index.ts",
-    "fake:png": "ts-node-dev fake-image-generator --size 1024 --extension png --output ./tmp",
     "test": "NODE_ENV=test jest --runInBand --detectOpenHandles",
     "build:tsc": "tsc",
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
-    "start": "node -r ts-node/register -r tsconfig-paths/register ./dist/shared/infra/http/server.js"
+    "start": "node ./dist/shared/infra/http/server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",
