@@ -2,7 +2,6 @@ coverage
 node_modules
 dist
 .env
-*.sql
 tmp/*
 !tmp/.gitkeep
 yarn-error.log
