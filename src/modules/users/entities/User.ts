@@ -38,7 +38,14 @@ export class User {
 
   @Expose({name: "avatar_url"})
   avatar_url(): string {
-    return `${process.env.APP_URL}/avatar/${this.avatar}`
+    switch(process.env.APP_ENVIRONMENT) {
+      case "local":
+        return `${process.env.APP_LOCAL_URL}/avatar/${this.avatar}`;
+      case "heroku":
+        return `${process.env.APP_HEROKU_URL}/avatar/${this.avatar}`;
+      default:
+        return ""
+    }
   }
 
   constructor() {
