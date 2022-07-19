@@ -8,6 +8,7 @@ import { GetUsersController } from "@modules/users/useCases/getUsers/GetUsersCon
 import { UpdateUserAvatarController } from "@modules/users/useCases/updateUserAvatar/UpdateUserAvatarController";
 
 import uploadConfig from "@config/upload";
+import { UpdateUserDataController } from "@modules/users/useCases/updateUserData/UpdateUserDataController";
 const multerUpload = multer(uploadConfig);
 
 export const usersRoutes = Router();
@@ -16,6 +17,7 @@ const getUsersController = new GetUsersController();
 const createUserController = new CreateUserController();
 const getUserProfileController = new GetUserProfileController();
 const updateUserAvatarController = new UpdateUserAvatarController();
+const updateUserDataController = new UpdateUserDataController();
 
 /**
  * @openapi
@@ -121,4 +123,10 @@ usersRoutes.patch(
   ensureAuthenticated,
   multerUpload.single("avatar"),
   updateUserAvatarController.handle
+);
+
+usersRoutes.put(
+  "/personal",
+  ensureAuthenticated,
+  updateUserDataController.handle
 );
