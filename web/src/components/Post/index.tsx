@@ -9,47 +9,35 @@ import {
 } from "react";
 import { api } from "../../services/api";
 
-import defaultAvatarPng from "../../assets/default-avatar.png";
-
 import { Avatar } from "../Avatar";
 import { Comment } from "../Comment";
 
+import { IComment, IContent } from "../../interfaces/posts/IPost";
+import { IUser } from "../../interfaces/users/IUser";
+
+import defaultAvatarPng from "../../assets/default-avatar.png";
 import styles from "./Post.module.css";
+import {
+  CreateComment,
+  DeleteComment,
+  GetAllCommentsByPost,
+  GiveCommentLike,
+} from "../../services/commentService";
+import { CreatePost } from "../../services/postService";
 
 interface PostProps {
   id: string;
-  author: Author;
-  content: Content[];
+  author: IUser;
+  content: IContent[];
   publishedAt: string;
-}
-
-interface Content {
-  type: "paragraph" | "link";
-  value: string;
-}
-
-interface Author {
-  avatar: string | null;
-  avatar_url: string;
-  name: string;
-  role: string;
-  email: string;
-}
-
-interface Comment {
-  id?: string;
-  likes: number;
-  commentary: string;
-  created_at: string;
-  user: Author;
 }
 
 export function Post({ id, author, content, publishedAt }: PostProps) {
   const [commentary, setCommentary] = useState("");
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
-    api.get(`/posts/${id}/comments`).then((resp) => {
+    GetAllCommentsByPost(id).then((resp) => {
       setComments(resp.data);
     });
   }, []);
@@ -72,12 +60,12 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
   async function handleCreateNewComment(event: FormEvent) {
     event.preventDefault();
 
-    const newComment = await api.post(`/posts/${id}/comment`, {
-      likes: 0,
+    const { data: newComment } = await CreateComment({
+      post_id: id,
       commentary,
     });
 
-    setComments([...comments, newComment.data]);
+    setComments([...comments, newComment]);
     setCommentary("");
   }
 
@@ -87,7 +75,7 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
   }
 
   async function deleteComment(comment_id: string) {
-    await api.delete(`/posts/${id}/comment/${comment_id}`);
+    await DeleteComment(id, comment_id);
 
     const updatedComments = comments.filter(
       (comment) => comment.id !== comment_id
@@ -96,7 +84,7 @@ export function Post({ id, author, content, publishedAt }: PostProps) {
   }
 
   async function onGiveLike(comment_id: string) {
-    await api.patch(`/posts/comment/${comment_id}/like`);
+    await GiveCommentLike(comment_id);
 
     const updatedComments = comments.map((comment) => {
       if (comment.id === comment_id) {

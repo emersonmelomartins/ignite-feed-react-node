@@ -1,17 +1,17 @@
-import { ArrowLeft } from "phosphor-react";
-import {
-  ChangeEvent,
-  FormEvent,
-  InputHTMLAttributes,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "phosphor-react";
 import { Avatar } from "../../components/Avatar";
-import defaultUserAvatarPng from "../../assets/default-avatar.png";
-import styles from "./Profile.module.css";
 import { api } from "../../services/api";
 import { useAuth } from "../../hooks/useAuth";
+import {
+  GetCurrentUserProfile,
+  UpdateCurrentUserAvatar,
+  UpdateCurrentUserData,
+} from "../../services/userService";
+import defaultUserAvatarPng from "../../assets/default-avatar.png";
+import styles from "./Profile.module.css";
+import { toast } from "react-toastify";
 
 export function Profile() {
   const { refreshUserInfo } = useAuth();
@@ -19,23 +19,28 @@ export function Profile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [avatar, setAvatar] = useState<string | null>("");
 
   useEffect(() => {
-    api.get("/users/profile").then((resp) => {
-      const { data } = resp;
-      setName(data.name);
-      setRole(data.role);
-      setAvatar(data.avatar);
-      setEmail(data.email);
+    GetCurrentUserProfile().then((resp) => {
+      const { name, role, avatar, avatar_url, email } = resp.data;
+      setName(name);
+      setRole(role);
+      setAvatar(avatar);
+      setEmail(email);
 
-      if (data.avatar) {
-        setAvatar(data.avatar_url);
+      if (avatar) {
+        setAvatar(avatar_url);
       }
     });
   }, []);
 
-  function handleUpdateProfile(event: FormEvent) {}
+  async function handleUpdateProfile(event: FormEvent) {
+    event.preventDefault();
+    await UpdateCurrentUserData({ role });
+
+    toast.success("Dados alterados com sucesso!");
+  }
 
   async function handleUpdateAvatar(event: ChangeEvent<HTMLInputElement>) {
     const { files } = event.target;
@@ -47,13 +52,9 @@ export function Profile() {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    await api.patch("/users/avatar", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    await UpdateCurrentUserAvatar(formData);
 
-    refreshUserInfo()
+    refreshUserInfo();
   }
 
   return (
@@ -101,6 +102,7 @@ export function Profile() {
                   id="name"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
+                  disabled
                 />
 
                 <label htmlFor="email">E-mail</label>
@@ -110,6 +112,7 @@ export function Profile() {
                   id="email"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
+                  disabled
                 />
 
                 <label htmlFor="role">Função/Cargo Atual</label>

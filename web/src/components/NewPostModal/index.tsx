@@ -1,26 +1,22 @@
 import React, { useState } from "react";
-import Modal from "react-modal";
-import { Link, PaperPlaneTilt, TextT, Trash, X } from "phosphor-react";
-import { v4 as uuid } from "uuid";
-import styles from "./NewPostModal.module.css";
-import { api } from "../../services/api";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
+import { v4 as uuid } from "uuid";
+import { Link, PaperPlaneTilt, TextT, Trash, X } from "phosphor-react";
+import {
+  IContent,
+  IRequestContentWithExtension,
+} from "../../interfaces/posts/IPost";
+import styles from "./NewPostModal.module.css";
+import { CreatePost } from "../../services/postService";
 
 interface NewPostModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-interface Content {
-  id: string;
-  type: "paragraph" | "link";
-  value: string;
-  isEditing: boolean;
-  order: number;
-}
-
 export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
-  const [content, setContent] = useState<Content[]>([]);
+  const [content, setContent] = useState<IRequestContentWithExtension[]>([]);
 
   const isPublishButtonHaveContent = content.length === 0;
 
@@ -35,7 +31,7 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
       });
     }
 
-    const newContent: Content = {
+    const newContent: IRequestContentWithExtension = {
       id: uuid(),
       type: "paragraph",
       value: "",
@@ -59,7 +55,7 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
       });
     }
 
-    const newContent: Content = {
+    const newContent: IRequestContentWithExtension = {
       id: uuid(),
       type: "link",
       value: "",
@@ -122,9 +118,7 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
 
   async function handleSubmit() {
     if (isValidToSubmit()) {
-      await api.post("/posts", {
-        content,
-      });
+      await CreatePost(content);
 
       window.location.reload();
     }
