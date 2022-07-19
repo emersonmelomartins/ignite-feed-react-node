@@ -1,17 +1,11 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import { environmentUrl } from "../config";
 
 interface ApiError {
   statusCode: number;
   message: string;
 }
-
-export const api = axios.create({
-  baseURL: "http://localhost:3333",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
   let session = sessionStorage.getItem("APP::user-info");
@@ -43,6 +37,15 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
   }
   return Promise.reject(error);
 };
+
+console.log(import.meta.env.VITE_APP_ENV)
+console.log({environmentUrl})
+export const api = axios.create({
+  baseURL: environmentUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 api.interceptors.request.use(onRequest, onRequestError);
 api.interceptors.response.use(onResponse, onResponseError);
