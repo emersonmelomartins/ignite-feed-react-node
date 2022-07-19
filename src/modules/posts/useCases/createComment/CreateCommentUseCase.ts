@@ -1,8 +1,9 @@
 import { ICreateCommentDTO } from "@modules/posts/dtos/ICreateCommentDTO";
-import { Comment } from "@modules/posts/entities/Comment";
+import { IResponseCommentDTO } from "@modules/posts/dtos/IResponseCommentDTO";
 import { ICommentsRepository } from "@modules/posts/repositories/ICommentsRepository";
 import { IPostsRepository } from "@modules/posts/repositories/IPostsRepository";
-import { AppError } from "@shared/errors/AppError";
+import { UserMap } from "@modules/users/mapper/UserMap";
+import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { inject, injectable } from "tsyringe";
 import { CreateCommentError } from "./CreateCommentError";
 import { CreateCommentSchema } from "./CreateCommentSchema";
@@ -13,14 +14,16 @@ export class CreateCommentUseCase {
     @inject("CommentsRepository")
     private commentsRepository: ICommentsRepository,
     @inject("PostsRepository")
-    private postsRepository: IPostsRepository
+    private postsRepository: IPostsRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
   ) {}
 
   async execute({
     user_id,
     post_id,
     commentary,
-  }: ICreateCommentDTO): Promise<Comment> {
+  }: ICreateCommentDTO): Promise<IResponseCommentDTO> {
     const schema = new CreateCommentSchema();
 
     await schema.validate({ commentary });
@@ -31,12 +34,26 @@ export class CreateCommentUseCase {
       throw new CreateCommentError.PostNotFound();
     }
 
-    const comment = await this.commentsRepository.create({
+    const user = await this.usersRepository.findById(user_id);
+
+    if (!user) {
+      throw new CreateCommentError.UserNotFound();
+    }
+
+    const { id, created_at, likes } = await this.commentsRepository.create({
       user_id,
       post_id,
       commentary,
     });
 
-    return comment;
+    const response: IResponseCommentDTO = {
+      id,
+      commentary,
+      created_at,
+      likes,
+      user: UserMap.toDTO(user),
+    };
+
+    return response;
   }
 }
