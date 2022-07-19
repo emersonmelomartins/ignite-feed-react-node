@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
 import { v4 as uuid } from "uuid";
@@ -19,6 +19,16 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
   const [content, setContent] = useState<IRequestContentWithExtension[]>([]);
 
   const isPublishButtonHaveContent = content.length === 0;
+
+  useEffect(() => {
+    if(isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    } else {
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+    }
+  }, [isOpen])
 
   function handleAddText() {
     let order = 0;
