@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+
     "preview": "vite preview",
     "start:dev": "VITE_APP_ENV=dev npm run dev",
     "start:prod": "VITE_APP_ENV=prod npm run dev",
-    "build:dev": "VITE_APP_ENV=dev tsc && vite build",
-    "build:prod": "VITE_APP_ENV=prod tsc && vite build"
+    
+    "build:dev": "VITE_APP_ENV=dev tsc && vite build"
   },
   "dependencies": {
     "axios": "^0.27.2",
