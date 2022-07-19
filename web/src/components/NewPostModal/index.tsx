@@ -21,13 +21,13 @@ export function NewPostModal({ isOpen, onRequestClose }: NewPostModalProps) {
   const isPublishButtonHaveContent = content.length === 0;
 
   useEffect(() => {
-    if(isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
-    } else {
-      document.body.style.overflow = 'auto';
-      document.body.style.height = 'auto';
-    }
+    // if(isOpen) {
+    //   document.body.style.overflow = 'hidden';
+    //   document.body.style.height = '100vh';
+    // } else {
+    //   document.body.style.overflow = 'auto';
+    //   document.body.style.height = 'auto';
+    // }
   }, [isOpen])
 
   function handleAddText() {
