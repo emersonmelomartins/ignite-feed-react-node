@@ -21,13 +21,12 @@
   text-transform: uppercase;
   margin: 0 auto;
   text-align: center;
-}
-
-.titleContainer h1 {
   font-size: 2.5rem;
 }
 
+
 .formContainer {
+  grid-row: 1;
   background-color: var(--gray-800);
   padding: 1.5rem;
   border-radius: 8px;
@@ -85,4 +84,25 @@ button[type="submit"]:disabled {
  .backButton:hover {
   text-decoration: none;
   color: var(--green-300);
+}
+
+
+
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: block;
+  }
+
+  .titleContainer {
+    margin-bottom: 2rem;
+  }
+
+  .titleContainer h2 {
+    display: none;
+  }
+
+  .titleContainer img {
+    width: 3rem;
+  }
 }

@@ -67,6 +67,25 @@ button[type="submit"]:disabled {
   justify-content: space-between;
 }
 
-.formContainer footer .signup span, .formContainer footer .signup a {
+.formContainer footer .signup span,
+.formContainer footer .signup a {
   font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    display: block;
+  }
+
+  .titleContainer {
+    margin-bottom: 2rem;
+  }
+
+  .titleContainer h1 {
+    font-size: 1.5rem;
+  }
+
+  .titleContainer img {
+    width: 3rem;
+  }
 }
