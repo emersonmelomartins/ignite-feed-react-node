@@ -29,6 +29,28 @@ export function Register() {
 
   return (
     <div className={styles.wrapper}>
+
+      
+<div className={styles.titleContainer}>
+        <img src={igniteLogo} alt="Ignite logo" />
+        <h2>
+          Para que você possa acessar nossa plataforma, realize seu cadastro ao
+          lado informando dados pessoais.
+        </h2>
+        <br />
+        <p>
+          Após o cadastro, se estiver tudo ok, você receberá um e-mail de
+          confirmação.
+        </p>
+
+        <br />
+        <Link to="/" className={styles.backButton}>
+          <ArrowLeft />
+          Voltar para login
+        </Link>
+      </div>
+
+      
       <div className={styles.formContainer}>
         <h2>Informe seus dados</h2>
         <br />
@@ -79,24 +101,6 @@ export function Register() {
         </form>
       </div>
 
-      <div className={styles.titleContainer}>
-        <img src={igniteLogo} alt="Ignite logo" />
-        <h2>
-          Para que você possa acessar nossa plataforma, realize seu cadastro ao
-          lado informando dados pessoais.
-        </h2>
-        <br />
-        <p>
-          Após o cadastro, se estiver tudo ok, você receberá um e-mail de
-          confirmação.
-        </p>
-
-        <br />
-        <Link to="/" className={styles.backButton}>
-          <ArrowLeft />
-          Voltar para login
-        </Link>
-      </div>
     </div>
   );
 }
