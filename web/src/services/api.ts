@@ -38,8 +38,6 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
   return Promise.reject(error);
 };
 
-console.log(import.meta.env.VITE_APP_ENV)
-console.log({environmentUrl})
 export const api = axios.create({
   baseURL: environmentUrl,
   headers: {
