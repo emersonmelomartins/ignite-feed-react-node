@@ -15,7 +15,7 @@ import { UpdateUserAvatarError } from "../UpdateUserAvatarError";
 describe("Update user avatar", () => {
   let updateUserAvatarUseCase: UpdateUserAvatarUseCase;
   let inMemoryUsersRepository: IUsersRepository;
-  let localStorageProvider: IStorageProvider;
+  let storageProvider: IStorageProvider;
 
   let user: User;
 
@@ -33,10 +33,10 @@ describe("Update user avatar", () => {
 
   beforeEach(async () => {
     inMemoryUsersRepository = new InMemoryUsersRepository();
-    localStorageProvider = new LocalStorageProvider();
+    storageProvider = new LocalStorageProvider();
     updateUserAvatarUseCase = new UpdateUserAvatarUseCase(
       inMemoryUsersRepository,
-      localStorageProvider
+      storageProvider
     );
 
     user = await inMemoryUsersRepository.create({

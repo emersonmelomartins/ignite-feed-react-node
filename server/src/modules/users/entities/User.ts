@@ -42,7 +42,7 @@ export class User {
       case "dev":
         return `${process.env.APP_LOCAL_URL}/avatar/${this.avatar}`;
       case "prod":
-        return `${process.env.APP_HEROKU_URL}/avatar/${this.avatar}`;
+        return `${process.env.APP_CLOUDINARY_URL}/avatar/${this.avatar}`;
       default:
         return ""
     }

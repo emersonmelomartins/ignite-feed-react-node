@@ -15,8 +15,8 @@ export class UpdateUserAvatarUseCase {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject("LocalStorageProvider")
-    private localStorageProvider: IStorageProvider
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
   async execute({ user_id, filename }: IRequest): Promise<void> {
@@ -27,16 +27,16 @@ export class UpdateUserAvatarUseCase {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      this.localStorageProvider.delete(filename, "");
+      this.storageProvider.delete(filename, "");
 
       throw new UpdateUserAvatarError.UserNotFound();
     }
 
     if (user.avatar) {
-      this.localStorageProvider.delete(user.avatar, "avatar");
+      this.storageProvider.delete(user.avatar, "avatar");
     }
 
-    this.localStorageProvider.save(filename, "avatar");
+    this.storageProvider.save(filename, "avatar");
 
     user.avatar = filename;
 
