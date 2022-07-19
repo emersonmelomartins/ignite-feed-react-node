@@ -29,7 +29,7 @@ const options: swaggerJsdoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Ignite Feed API",
+      title: "Ignite Feed API.",
       version: "0.0.1",
     },
     components: {
