@@ -1,82 +1,59 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode } from "react";
+import { CreateUser, GetCurrentUserProfile } from "../services/userService";
+import { AuthenticateUser } from "../services/sessionService";
 import { useSessionStorage } from "../hooks/useSessionStorage";
-import { api } from "../services/api";
+import { IRequestSession } from "../interfaces/sessions/IRequestSession";
+import { IRequestUser } from "../interfaces/users/IRequestUser";
+import { IUser } from "../interfaces/users/IUser";
 
-interface AuthContextProps {
-  login: (email: string, password: string) => void;
+interface IAuthContextProps {
+  login: ({ email, password }: IRequestSession) => Promise<void>;
   logout: () => void;
-  register: (
-    name: string,
-    email: string,
-    password: string,
-    role: string,
-    avatar?: string
-  ) => Promise<boolean>;
+  register: (data: IRequestUser) => Promise<boolean>;
   refreshUserInfo: () => void;
   signed: boolean;
-  user: User;
+  user: IUser;
 }
 
-interface AuthContextProviderProps {
+interface IAuthContextProviderProps {
   children: ReactNode;
 }
 
-interface User {
-  name: string;
-  email: string;
-  role: string;
-  avatar: string | null;
-  avatar_url: string;
-  token: string;
-}
+export const AuthContext = createContext({} as IAuthContextProps);
 
-export const AuthContext = createContext({} as AuthContextProps);
-
-export function AuthContextProvider({ children }: AuthContextProviderProps) {
+export function AuthContextProvider({ children }: IAuthContextProviderProps) {
   const [user, setUser] = useSessionStorage("APP::user-info", "");
 
-  async function login(email: string, password: string) {
-    const { data } = await api.post("/sessions", {
-      email,
-      password,
-    });
+  async function login({ email, password }: IRequestSession): Promise<void> {
+    const { data } = await AuthenticateUser({ email, password });
 
     setUser(data);
   }
 
-  function logout() {
+  function logout(): void {
     sessionStorage.clear();
     setUser("");
   }
 
-  async function register(
-    name: string,
-    email: string,
-    password: string,
-    role: string
-  ) {
-    await api.post("/users", {
-      email,
-      password,
-      name,
-      role,
-    });
+  async function register({
+    name,
+    email,
+    password,
+    role,
+  }: IRequestUser): Promise<boolean> {
+    await CreateUser({ name, email, password, role });
 
     return true;
   }
 
-  async function refreshUserInfo() {
+  async function refreshUserInfo(): Promise<void> {
     if (!user) return;
 
-    const { data } = await api.get("/users/profile");
+    const { data } = await GetCurrentUserProfile();
 
     const updatedUser = {
+      ...data,
       token: user.token,
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      avatar: data.avatar,
-      avatar_url: data.avatar_url,
     };
 
     setUser(updatedUser);

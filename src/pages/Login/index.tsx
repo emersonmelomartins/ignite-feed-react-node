@@ -18,7 +18,7 @@ export function Login() {
 
   function handleLogin(e: FormEvent) {
     e.preventDefault();
-    login(email, password);
+    login({ email, password });
   }
 
   const isSubmitDisabled = !email || !password;
