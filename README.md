@@ -28,6 +28,8 @@ A pasta <b>web</b> contém Frontend desenvolvido com ReactJS + Vite + Typescript
 ## Demonstração
 O backend foi publicado no [Heroku](https://www.heroku.com/) e o frontend publicado no [Netlify](https://www.netlify.com/).
 
+As imagens salvas estão sendo armazenadas no [Cloudinary](https://cloudinary.com/)
+
 Acesse o frontend: https://astounding-youtiao-95990a.netlify.app/
 
 Acesse o backend: https://ignite-feed-note.herokuapp.com/
