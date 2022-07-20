@@ -1,3 +1,4 @@
+import { User } from "@modules/users/entities/User";
 import { IUsersRepository } from "@modules/users/repositories/IUsersRepository";
 import { inject, injectable } from "tsyringe";
 import { UpdateUserDataError } from "./UpdateUserDataError";
@@ -14,7 +15,7 @@ export class UpdateUserDataUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute({ id, role }: IRequest): Promise<void> {
+  async execute({ id, role }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(id);
 
     if (!user) {
@@ -24,5 +25,7 @@ export class UpdateUserDataUseCase {
     user.role = role;
 
     await this.usersRepository.create(user);
+
+    return user;
   }
 }
