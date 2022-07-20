@@ -86,7 +86,7 @@ usersRoutes.get("/", ensureAuthenticated, getUsersController.handle);
  *                role:
  *                  type: string
  *     responses:
- *      200:
+ *      201:
  *        description: Success
  *        content:
  *          application/json:
@@ -99,9 +99,9 @@ usersRoutes.get("/", ensureAuthenticated, getUsersController.handle);
  *                  type: string
  *                email:
  *                  type: string
- *                password:
- *                  type: string
  *                avatar:
+ *                  type: string
+ *                avatar_url:
  *                  type: string
  *                role:
  *                  type: string
@@ -112,12 +112,73 @@ usersRoutes.get("/", ensureAuthenticated, getUsersController.handle);
  */
 usersRoutes.post("/", createUserController.handle);
 
+/**
+ * @openapi
+ * '/users/profile':
+ *  get:
+ *     security:
+ *      - bearerAuth: []
+ *     tags:
+ *     - Users
+ *     summary: Get current user profile
+ *     responses:
+ *      201:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *           schema:
+ *              type: object
+ *              properties:
+ *                id:
+ *                  type: string
+ *                name:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                avatar:
+ *                  type: string
+ *                avatar_url:
+ *                  type: string
+ *                role:
+ *                  type: string
+ *      404:
+ *        description: Not found
+ *      500:
+ *        description: Internal server error
+ */
 usersRoutes.get(
   "/profile",
   ensureAuthenticated,
   getUserProfileController.handle
 );
 
+/**
+ * @openapi
+ * '/users/avatar':
+ *  patch:
+ *     security:
+ *      - bearerAuth: []
+ *     tags:
+ *     - Users
+ *     summary: Update current user avatar
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              avatar:
+ *                type: string
+ *                format: binary
+ *     responses:
+ *      204:
+ *        description: Success
+ *      400:
+ *        description: User already exists.
+ *      500:
+ *        description: Internal server error
+ */
 usersRoutes.patch(
   "/avatar",
   ensureAuthenticated,
@@ -125,6 +186,30 @@ usersRoutes.patch(
   updateUserAvatarController.handle
 );
 
+/**
+ * @openapi
+ * '/users/personal':
+ *  put:
+ *     security:
+ *      - bearerAuth: []
+ *     tags:
+ *     - Users
+ *     summary: Update current user personal data
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              role:
+ *                type: string
+ *     responses:
+ *      204:
+ *        description: Success
+ *      500:
+ *        description: Internal server error
+ */
 usersRoutes.put(
   "/personal",
   ensureAuthenticated,
