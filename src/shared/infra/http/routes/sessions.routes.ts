@@ -31,15 +31,18 @@ const authenticateUserController = new AuthenticateUserController();
    *           schema:
    *              type: object
    *              properties:
+   *                name:
+   *                  type: string
+   *                email:
+   *                  type: string
+   *                role:
+   *                  type: string
+   *                avatar:
+   *                  type: string
+   *                avatar_url:
+   *                  type: string
    *                token:
    *                  type: string
-   *                user:
-   *                  type: object
-   *                  properties:
-   *                    name:
-   *                      type: string
-   *                    email:
-   *                      type: string
    *      400:
    *        description: Incorrect email or password.
    *      500:
