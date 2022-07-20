@@ -19,12 +19,12 @@ describe("Update user avatar", () => {
 
   let user: User;
 
-  let files: string[] = ["./tmp/image.png", "./tmp/another_image.png"];
+  let files = ["./tmp/image.png", "./tmp/another_image.png"];
 
   beforeAll(async () => {
-    files.forEach((file) => {
+    files.forEach(async (file) => {
       try {
-        fs.createWriteStream(file);
+        await fs.promises.writeFile(file, new Uint8Array(Buffer.from(file)));
       } catch (err) {
         throw new AppError("Can't create mock file.");
       }

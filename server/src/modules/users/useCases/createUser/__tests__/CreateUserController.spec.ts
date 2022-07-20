@@ -2,16 +2,19 @@ import request from "supertest";
 import fs from "fs";
 import { app } from "@shared/infra/http/app";
 import { AppDataSource } from "@shared/infra/typeorm";
+import { DataSource } from "typeorm";
 
 describe("Create User Controller", () => {
+
+  let connection: DataSource;
+
   beforeAll(async () => {
-    await AppDataSource.initialize();
-    await AppDataSource.runMigrations();
+    connection = await AppDataSource.initialize();
+    await connection.runMigrations();
   });
 
   afterAll(async () => {
-    await AppDataSource.dropDatabase();
-    await AppDataSource.destroy();
+    await connection.destroy();
 
     let exists = false;
     const path = "./src/database/__test__ignite-feed.sql";

@@ -49,10 +49,11 @@ const options: swaggerJsdoc.Options = {
   },
   apis: ["./src/shared/infra/http/routes/*.routes.ts"],
 };
+
 const swaggerSpec = swaggerJsdoc(options);
 app.use("/swagger", serve, setup(swaggerSpec));
 
-app.use(showLogInfo);
+// app.use(showLogInfo);
 
 app.use("/avatar", express.static(`${uploadConfig.tmpDestination}/avatar`));
 
